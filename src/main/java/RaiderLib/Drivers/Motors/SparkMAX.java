@@ -1,6 +1,5 @@
 package RaiderLib.Drivers.Motors;
 
-import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
