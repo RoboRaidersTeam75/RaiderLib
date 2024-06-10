@@ -8,6 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class Logger {
     private static int queueCapacity = 50 * 4; // ~ 4 seconds
@@ -32,7 +33,10 @@ public class Logger {
 
     public static void updateQueue() {
         try {
-            updatesQueue.put(new LogTable(updatesMap, HALUtil.getFPGATime()));
+            updatesQueue.add(new LogTable(updatesMap, HALUtil.getFPGATime()));
+            updatesMap = new HashMap<>();
+        } catch (IllegalStateException exception) {
+            DriverStation.reportError("Logging queue capacity exceeded, data is no longer being logged.", false);
         }
     }
 

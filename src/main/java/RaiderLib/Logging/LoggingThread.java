@@ -7,9 +7,9 @@ import RaiderLib.Logging.Logger.LogTable;
 
 public class LoggingThread extends Thread{
 
-    private BlockingQueue<LoggedValue> updatesQueue;
+    private BlockingQueue<LogTable> updatesQueue;
 
-    public LoggingThread(BlockingQueue<LoggedValue> updatesQueue) {
+    public LoggingThread(BlockingQueue<LogTable> updatesQueue) {
         this.setDaemon(true);
         this.updatesQueue = updatesQueue;
     }
