@@ -3,19 +3,30 @@ package RaiderLib.Drivers.IMUs;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public class Pigeon2 implements IMU{
-  public double getAngle(){
-    return 0;
-  }
-  public double getRoll(){
-    return 0;
-  }
-  public double getPitch(){
-    return 0;
-  }
-  public double getYaw(){
-    return 0;
-  } 
-  public void setAngle(Rotation2d angle){
 
-  }
+    private com.ctre.phoenix6.hardware.Pigeon2 pigeon; // this is what we get for naming the class the same as in the library
+
+    public Pigeon2(int CANID){
+        pigeon = new com.ctre.phoenix6.hardware.Pigeon2(CANID);
+    }
+
+    public double getAngle(){
+        return pigeon.getAngle();
+    }
+    
+    public double getRoll(){
+        return pigeon.getRoll().getValueAsDouble();
+    }
+
+    public double getPitch(){
+        return pigeon.getPitch().getValueAsDouble();
+    }
+
+    public double getYaw(){
+        return pigeon.getYaw().getValueAsDouble();
+    } 
+
+    public void setAngle(Rotation2d angle){
+        pigeon.setYaw(angle.getDegrees());
+    }
 }
