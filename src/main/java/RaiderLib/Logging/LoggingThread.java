@@ -8,6 +8,7 @@ import RaiderLib.Logging.Logger.LogTable;
 public class LoggingThread extends Thread{
 
     private BlockingQueue<LogTable> updatesQueue;
+    private NTLogger ntLogger = new NTLogger();
 
     public LoggingThread(BlockingQueue<LogTable> updatesQueue) {
         this.setDaemon(true);
@@ -21,6 +22,7 @@ public class LoggingThread extends Thread{
                 LogTable updateTable = updatesQueue.take();
 
                 // Send the update table to each writer somehow
+                ntLogger.sendUpdates(updateTable); // Need to change API if adding more writers
 
             }
         } catch (InterruptedException exception) {

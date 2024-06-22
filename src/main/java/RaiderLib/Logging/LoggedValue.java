@@ -1,5 +1,7 @@
 package RaiderLib.Logging;
 
+import java.util.List;
+
 public class LoggedValue {
     public final LoggableType type;
     private final Object value;
@@ -18,6 +20,27 @@ public class LoggedValue {
         FloatArray,
         DoubleArray,
         StringArray
+    }
+
+    private static final List<String> nt4Types = List.of(
+                "raw",
+                "boolean",
+                "int",
+                "float",
+                "double",
+                "string",
+                "boolean[]",
+                "int[]",
+                "float[]",
+                "double[]",
+                "string[]");
+
+    public String getNT4Type() {
+        return nt4Types.get(type.ordinal());
+    }
+
+    public Object getLogValue() {
+        return value;
     }
 
     LoggedValue(byte[] value) {
