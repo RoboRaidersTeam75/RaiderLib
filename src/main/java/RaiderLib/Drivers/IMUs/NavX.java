@@ -30,8 +30,6 @@ public class NavX implements IMU {
 
     public void setAngle(Rotation2d angle){
         // TODO: idk if understood the point of this function but hopefully this works
-        // setAngle(new Rotation2d(0)) will simply reset the gyro
-        navX.reset(); // 0 gyro
         navX.setAngleAdjustment(angle.getDegrees()); // set angle adjustment new angle
     }
 
