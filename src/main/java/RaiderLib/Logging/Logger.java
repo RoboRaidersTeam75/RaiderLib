@@ -41,4 +41,40 @@ public class Logger {
     }
 
     public static record LogTable(Map<String, LoggedValue> updatesMap, long timestamp) {}
+
+    private static void writeUpdate(String key, LoggedValue value) {
+        updatesMap.put(key, value);
+    }
+
+    public static void log(String key, boolean value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, boolean[] value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, double value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, double[] value) {
+          writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, long value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, long[] value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, String value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
+  
+      public static void log(String key, String[] value) {
+        writeUpdate(key, new LoggedValue(value));
+      }
 }
