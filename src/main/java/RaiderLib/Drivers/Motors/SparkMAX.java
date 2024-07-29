@@ -19,8 +19,8 @@ public class SparkMAX implements Motor {
   private final CANSparkMax m_SparkMAX;
   private final SparkPIDController m_Controller;
   private final RelativeEncoder m_Encoder;
-  public SparkMAX(int CANID, MotorConfiguration config){
-    m_SparkMAX = new CANSparkMax(CANID, CANSparkLowLevel.MotorType.kBrushless);
+  public SparkMAX(MotorConfiguration config){
+    m_SparkMAX = new CANSparkMax(config.CANID, CANSparkLowLevel.MotorType.kBrushless);
     m_Controller = m_SparkMAX.getPIDController();
     m_Encoder = m_SparkMAX.getEncoder();
 

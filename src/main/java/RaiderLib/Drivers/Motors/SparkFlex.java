@@ -19,8 +19,8 @@ public class SparkFlex implements Motor {
   private final CANSparkFlex m_SparkFlex;
   private final SparkPIDController m_Controller;
   private final RelativeEncoder m_Encoder;
-  public SparkFlex(int CANID, MotorConfiguration config){
-    m_SparkFlex = new CANSparkFlex(CANID, CANSparkLowLevel.MotorType.kBrushless);
+  public SparkFlex(MotorConfiguration config){
+    m_SparkFlex = new CANSparkFlex(config.CANID, CANSparkLowLevel.MotorType.kBrushless);
     m_Controller = m_SparkFlex.getPIDController();
     m_Encoder = m_SparkFlex.getEncoder();
 

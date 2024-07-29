@@ -33,8 +33,12 @@ public class KrakenX60 implements Motor {
     private final PositionTorqueCurrentFOC m_PositionProOut = new PositionTorqueCurrentFOC(0).withSlot(1);
     private final boolean isLicensed;
   
-    public KrakenX60(int CANID, String Canbus, MotorConfiguration config){
-      m_KrakenX60 = new TalonFX(CANID, Canbus);
+    public KrakenX60(MotorConfiguration config){
+      if (config.canbus != null) {
+        m_KrakenX60 = new TalonFX(config.CANID, config.canbus);
+      } else {
+        m_KrakenX60 = new TalonFX(config.CANID);
+      }
       configMotor(config);
       m_KrakenX60.setPosition(0);
       isLicensed = m_KrakenX60.getIsProLicensed().waitForUpdate(5).getValue();

@@ -9,6 +9,9 @@ package RaiderLib.Config;
  * ramp rates
  */
 public class MotorConfiguration {
+  public int CANID;
+  public String canbus = null; // should be kept unspecified if its a REV motor
+
   public class CurrentConfigs{
     public int SupplyCurrentLimit = 60;
     public double SupplyCurrentThresholdAmps = 80;

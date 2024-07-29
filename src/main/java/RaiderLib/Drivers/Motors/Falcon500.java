@@ -33,8 +33,12 @@ public class Falcon500 implements Motor {
     private final PositionTorqueCurrentFOC m_PositionProOut = new PositionTorqueCurrentFOC(0).withSlot(1);
     private final boolean isLicensed;
   
-    public Falcon500(int CANID, String Canbus, MotorConfiguration config){
-      m_Falcon500 = new TalonFX(CANID, Canbus);
+    public Falcon500(MotorConfiguration config){
+      if (config.canbus != null) {
+        m_Falcon500 = new TalonFX(config.CANID, config.canbus);
+      } else {
+        m_Falcon500 = new TalonFX(config.CANID);
+      }
       configMotor(config);
       m_Falcon500.setPosition(0);
       isLicensed = m_Falcon500.getIsProLicensed().waitForUpdate(5).getValue();
