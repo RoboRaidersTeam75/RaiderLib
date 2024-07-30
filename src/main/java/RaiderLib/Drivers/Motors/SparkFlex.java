@@ -4,12 +4,16 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+
+import java.util.function.Supplier;
+
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.PIDConstants;
+import RaiderLib.Drivers.DigitalInputs.LimitSwitch;
 
 public class SparkFlex implements Motor {
   /*
@@ -110,5 +114,12 @@ public class SparkFlex implements Motor {
     m_Controller.setD(config.PIDConfigs.slot2Configs.kD, 2);
     m_Controller.setFF(config.PIDConfigs.slot2Configs.kF, 2);
 
+  }
+
+  public void runUntilLimit(LimitSwitch limitSwitch, Supplier<Void> toRun) {
+    while (limitSwitch.get()) {
+      toRun.get();
+    }
+    setPercentOut(0);
   }
 }

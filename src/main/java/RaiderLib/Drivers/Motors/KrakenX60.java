@@ -1,5 +1,7 @@
 package RaiderLib.Drivers.Motors;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -14,6 +16,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.PIDConstants;
+import RaiderLib.Drivers.DigitalInputs.LimitSwitch;
 
 public class KrakenX60 implements Motor {
   /**
@@ -181,6 +184,13 @@ public class KrakenX60 implements Motor {
       krakenConfig.Slot2.kD = config.PIDConfigs.slot2Configs.kD;
       krakenConfig.Slot2.kS = config.PIDConfigs.slot2Configs.kF;
 
+    }
+
+    public void runUntilLimit(LimitSwitch limitSwitch, Supplier<Void> toRun) {
+        while (limitSwitch.get()) {
+            toRun.get();
+        }
+        setPercentOut(0);
     }
     
 }
