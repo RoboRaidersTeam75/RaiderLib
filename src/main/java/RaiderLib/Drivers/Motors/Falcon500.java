@@ -1,8 +1,5 @@
 package RaiderLib.Drivers.Motors;
 
-import java.util.function.DoubleConsumer;
-import java.util.function.Supplier;
-
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -17,7 +14,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.PIDConstants;
-import RaiderLib.Drivers.DigitalInputs.LimitSwitch;
 
 public class Falcon500 implements Motor {
   /**
@@ -186,11 +182,5 @@ public class Falcon500 implements Motor {
       falconConfig.Slot2.kS = config.PIDConfigs.slot2Configs.kF;
 
     }
-
-    public void runUntilLimit(LimitSwitch limitSwitch, Supplier<Void> toRun) {
-        while (limitSwitch.get()) {
-            toRun.get();
-        }
-        setPercentOut(0);
-    }
+    
 }

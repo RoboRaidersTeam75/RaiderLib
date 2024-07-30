@@ -1,17 +1,15 @@
 package RaiderLib.Drivers.Motors;
 
-import java.util.function.Supplier;
-
 import RaiderLib.Config.PIDConstants;
-import RaiderLib.Drivers.DigitalInputs.LimitSwitch;
 
 public interface Motor {
-    public enum MotorType {
-        FALCON500,
-        KRAKENX60,
-        CANSPARKMAX,
-        CANSPARKFLEX
-    }
+
+public enum MotorType{
+    FALCON500,
+    KRAKENX60,
+    CANSPARKMAX,
+    CANSPARKFLEX
+  }
   
     /**
      * sets the speed from -100% to 100%
@@ -93,5 +91,5 @@ public interface Motor {
 
     public MotorType getType();
     
-    public void runUntilLimit(LimitSwitch limitSwitch, Supplier<Void> toRun);
+
 }

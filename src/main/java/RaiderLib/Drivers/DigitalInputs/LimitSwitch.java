@@ -2,7 +2,7 @@ package RaiderLib.Drivers.DigitalInputs;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class LimitSwitch {
+public abstract class LimitSwitch {
   private DigitalInput m_limitSwitch;
   
   public LimitSwitch(int port) {
