@@ -2,6 +2,10 @@ package RaiderLib.Logging;
 
 import java.util.List;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 public class LoggedValue {
     public final LoggableType type;
     private final Object value;
@@ -19,7 +23,10 @@ public class LoggedValue {
         IntegerArray,
         FloatArray,
         DoubleArray,
-        StringArray
+        StringArray,
+        Pose2d,
+        SwerveModuleState,
+        SwerveModulePosition
     }
 
     private static final List<String> nt4Types = List.of(
@@ -99,6 +106,39 @@ public class LoggedValue {
 
     LoggedValue(String[] value) {
         type = LoggableType.StringArray;
+        this.value = value;
+    }
+
+    LoggedValue(Pose2d value) {
+        type = LoggableType.Pose2d;
+        Pose2d[] values = {value};
+        this.value = values;
+    }
+
+    LoggedValue(Pose2d[] value) {
+        type = LoggableType.Pose2d;
+        this.value = value;
+    }
+
+    LoggedValue(SwerveModuleState value) {
+        type = LoggableType.SwerveModuleState;
+        SwerveModuleState[] values = {value};
+        this.value = values;
+    }
+
+    LoggedValue(SwerveModuleState[] value) {
+        type = LoggableType.SwerveModuleState;
+        this.value = value;
+    }
+
+    LoggedValue(SwerveModulePosition value) {
+        type = LoggableType.SwerveModulePosition;
+        SwerveModulePosition[] values = {value};
+        this.value = values;
+    }
+
+    LoggedValue(SwerveModulePosition[] value) {
+        type = LoggableType.SwerveModulePosition;
         this.value = value;
     }
 }

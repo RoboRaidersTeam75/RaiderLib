@@ -43,7 +43,7 @@ public class Logger {
     public static record LogTable(Map<String, LoggedValue> updatesMap, long timestamp) {}
 
     private static void writeUpdate(String key, LoggedValue value) {
-        updatesMap.put(key, value);
+        updatesMap.put("Logger/" + key, value);
     }
 
     public static void log(String key, boolean value) {
