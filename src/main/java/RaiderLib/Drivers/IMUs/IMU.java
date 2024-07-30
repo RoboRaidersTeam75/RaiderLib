@@ -9,6 +9,7 @@ public interface IMU {
     public double getYaw();
     public double getRoll();
     public double getPitch();
+    public Rotation2d getRotation2d();
     
     public void setAngle(Rotation2d angle);
 

@@ -26,6 +26,10 @@ public class Pigeon2 implements IMU{
         return pigeon.getYaw().getValueAsDouble();
     } 
 
+    public Rotation2d getRotation2d(){
+        return Rotation2d.fromDegrees(pigeon.getYaw().getValueAsDouble());
+    }
+
     public void setAngle(Rotation2d angle){
         pigeon.setYaw(angle.getDegrees());
     }

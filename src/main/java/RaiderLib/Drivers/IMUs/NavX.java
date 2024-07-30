@@ -28,6 +28,10 @@ public class NavX implements IMU {
         return navX.getYaw();
     } 
 
+    public Rotation2d getRotation2d(){
+        return Rotation2d.fromDegrees(navX.getAngle());
+    }
+
     public void setAngle(Rotation2d angle){
         // TODO: idk if understood the point of this function but hopefully this works
         navX.setAngleAdjustment(angle.getDegrees()); // set angle adjustment new angle

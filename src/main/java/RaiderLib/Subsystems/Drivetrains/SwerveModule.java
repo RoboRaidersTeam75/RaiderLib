@@ -8,6 +8,7 @@ import RaiderLib.Util.Conversions;
 import RaiderLib.Util.ModuleState;
 import RaiderLib.Util.SwerveConstants;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveModule {
@@ -71,5 +72,14 @@ public class SwerveModule {
             ),
             getAngle()
         );
+    }
+
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(
+            Conversions.rotationsToMeters(
+                m_driveMotor.getPosition(),
+                m_constants.wheelCircumference,
+                m_constants.driveGearRatio
+            ), getAngle());
     }
 }
