@@ -1,5 +1,3 @@
 package RaiderLib.Drivers.Lights;
 
-public abstract class PWMLights {
-  
-}
+public abstract class PWMLights {}

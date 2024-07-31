@@ -13,8 +13,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,11 +54,12 @@ public class PhotonVisionCamera extends SubsystemBase {
     List<PhotonTrackedTarget> targets = m_result.getTargets();
     return targets.get(0).getFiducialId();
   }
-  public List<Integer> getAllTagIds(){
+
+  public List<Integer> getAllTagIds() {
     List<PhotonTrackedTarget> targets = m_result.getTargets();
     ArrayList<Integer> ids = new ArrayList<Integer>();
 
-    for(PhotonTrackedTarget target: targets){
+    for (PhotonTrackedTarget target : targets) {
       ids.add(target.getFiducialId());
     }
     return ids;

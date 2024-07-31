@@ -1,5 +1,3 @@
 package RaiderLib.Dashboard;
 
-public class Layout {
-  
-}
+public class Layout {}

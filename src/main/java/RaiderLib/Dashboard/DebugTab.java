@@ -1,5 +1,3 @@
 package RaiderLib.Dashboard;
 
-public class DebugTab {
-  
-}
+public class DebugTab {}

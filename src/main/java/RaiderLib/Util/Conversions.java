@@ -110,7 +110,8 @@ public class Conversions {
    * @param gearRatio Gear Ratio between Motor and Wheel
    * @return Motor Position: (in Rotations)
    */
-  public static double MetersToRotations(double wheelMeters, double circumference, double gearRatio) {
+  public static double MetersToRotations(
+      double wheelMeters, double circumference, double gearRatio) {
     double wheelRotations = wheelMeters / circumference;
     double motorRotations = wheelRotations * gearRatio;
     return motorRotations;

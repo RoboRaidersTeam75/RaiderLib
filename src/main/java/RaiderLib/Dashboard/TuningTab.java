@@ -1,5 +1,3 @@
 package RaiderLib.Dashboard;
 
-public class TuningTab {
-  
-}
+public class TuningTab {}

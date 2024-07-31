@@ -1,5 +1,3 @@
 package RaiderLib.Logging;
 
-public class DiskLogger {
-  
-}
+public class DiskLogger {}

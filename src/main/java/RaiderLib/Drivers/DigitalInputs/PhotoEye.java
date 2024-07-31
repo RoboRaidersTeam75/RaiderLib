@@ -1,5 +1,3 @@
 package RaiderLib.Drivers.DigitalInputs;
 
-public abstract class PhotoEye {
-  
-}
+public abstract class PhotoEye {}
