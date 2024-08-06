@@ -18,9 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 
 public class AutoTab {
@@ -29,11 +32,12 @@ public class AutoTab {
   private Command autoCommand = Commands.runOnce(() -> {});
   private Alliance alliance;
   private Field2d field;
+  private HashMap<Character, Command> commandMap;
 
   private GenericEntry autoStringEntry;
   private GenericEntry safetyEntry;
 
-  public AutoTab() {
+  public AutoTab(HashMap<Character, Command> commands) {
     NetworkTableInstance nt = NetworkTableInstance.getDefault();
     NetworkTable table = nt.getTable("Shuffleboard").getSubTable("Customize Auto");
 
@@ -42,6 +46,7 @@ public class AutoTab {
 
     alliance = DriverStation.getAlliance().get();
     field = new Field2d();
+    commandMap = commands;
 
     setupAutoTab();
   }
@@ -111,5 +116,14 @@ public class AutoTab {
   public void generatePaths() {
     String autoString = autoStringEntry.getString("");
     boolean ignoreSafety = safetyEntry.getBoolean(false);
+
+    SequentialCommandGroup finalPath = new SequentialCommandGroup();
+    trajectories.clear();
+
+    if (autoString.length() == 0) {
+      return;
+    }
+
+
   }
 }
