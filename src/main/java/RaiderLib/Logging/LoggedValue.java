@@ -42,8 +42,25 @@ public class LoggedValue {
           "double[]",
           "string[]");
 
+  private static final List<String> wpilogTypes = List.of(
+        "raw",
+        "boolean",
+        "int64",
+        "float",
+        "double",
+        "string",
+        "boolean[]",
+        "int64[]",
+        "float[]",
+        "double[]",
+        "string[]");
+
   public String getNT4Type() {
     return nt4Types.get(type.ordinal());
+  }
+
+  public String getWPILogType() {
+    return wpilogTypes.get(type.ordinal());
   }
 
   public Object getLogValue() {
