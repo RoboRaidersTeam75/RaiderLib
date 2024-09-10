@@ -94,10 +94,10 @@ public class KrakenX60 implements Motor {
   public void setPIDs(PIDConstants constants, int slot) {
     SlotConfigs config = new SlotConfigs();
     config.SlotNumber = slot;
-    config.kP = constants.p;
-    config.kI = constants.i;
-    config.kD = constants.d;
-    config.kS = constants.f; // feedforward overcomes static friction in this case
+    config.kP = constants.kP;
+    config.kI = constants.kI;
+    config.kD = constants.kD;
+    config.kS = constants.kF; // feedforward overcomes static friction in this case
     m_KrakenX60.getConfigurator().apply(config);
   }
 

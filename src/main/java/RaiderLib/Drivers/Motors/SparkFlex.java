@@ -60,10 +60,10 @@ public class SparkFlex implements Motor {
   }
 
   public void setPIDs(PIDConstants constants, int slot) {
-    m_Controller.setP(constants.p, slot);
-    m_Controller.setI(constants.i, slot);
-    m_Controller.setD(constants.d, slot);
-    m_Controller.setFF(constants.d, slot);
+    m_Controller.setP(constants.kP, slot);
+    m_Controller.setI(constants.kI, slot);
+    m_Controller.setD(constants.kD, slot);
+    m_Controller.setFF(constants.kF, slot);
   }
 
   public void setP(double p, int slot) {

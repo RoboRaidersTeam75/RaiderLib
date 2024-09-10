@@ -20,30 +20,9 @@ public class MotorConfiguration {
   }
 
   public class PIDConfigs {
-    public class Slot0Configs {
-      public double kP = 0;
-      public double kI = 0;
-      public double kD = 0;
-      public double kF = 0;
-    }
-
-    public class Slot1Configs {
-      public double kP = 0;
-      public double kI = 0;
-      public double kD = 0;
-      public double kF = 0;
-    }
-
-    public class Slot2Configs {
-      public double kP = 0;
-      public double kI = 0;
-      public double kD = 0;
-      public double kF = 0;
-    }
-
-    public Slot0Configs slot0Configs = new Slot0Configs();
-    public Slot1Configs slot1Configs = new Slot1Configs();
-    public Slot2Configs slot2Configs = new Slot2Configs();
+    public PIDConstants slot0Configs = new PIDConstants();
+    public PIDConstants slot1Configs = new PIDConstants();
+    public PIDConstants slot2Configs = new PIDConstants();
   }
 
   public class GeneralConfigs {
