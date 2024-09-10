@@ -102,9 +102,11 @@ public interface Motor {
   /**
    * sets the F term
    *
-   * @param f - feedforawrd term
+   * @param f - feedforward term
    */
   public void setF(double f, int slot);
 
   public MotorType getType();
+
+  public void setFollower(Motor follower);
 }
