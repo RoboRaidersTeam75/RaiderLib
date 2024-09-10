@@ -16,6 +16,7 @@ public class SparkMAX implements Motor {
    * slot 1 is position
    */
   private final CANSparkMax m_SparkMAX;
+  private Motor m_follower;
   private final SparkPIDController m_Controller;
   private final RelativeEncoder m_Encoder;
 
@@ -29,18 +30,22 @@ public class SparkMAX implements Motor {
 
   public void setPercentOut(double speed) {
     m_SparkMAX.set(speed);
+    m_follower.setPercentOut(speed);
   }
 
   public void setRPM(double RPM) {
     m_Controller.setReference(RPM, ControlType.kVelocity);
+    m_follower.setRPM(RPM);
   }
 
   public void setPosition(double Rotations) {
     m_Controller.setReference(Rotations, ControlType.kPosition);
+    m_follower.setPosition(Rotations);
   }
 
   public void setVoltage(double voltage) {
     m_SparkMAX.setVoltage(voltage);
+    m_follower.setVoltage(voltage);
   }
 
   public double getRPM() {
@@ -84,6 +89,10 @@ public class SparkMAX implements Motor {
 
   public MotorType getType() {
     return MotorType.CANSPARKMAX;
+  }
+
+  public void setFollower(Motor follower) {
+    m_follower = follower;
   }
 
   private void configMotor(MotorConfiguration config) {
