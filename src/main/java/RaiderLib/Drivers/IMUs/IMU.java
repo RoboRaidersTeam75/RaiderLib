@@ -15,4 +15,6 @@ public interface IMU {
   public Rotation2d getRotation2d();
 
   public void setAngle(Rotation2d angle);
+
+  public void reset();
 }

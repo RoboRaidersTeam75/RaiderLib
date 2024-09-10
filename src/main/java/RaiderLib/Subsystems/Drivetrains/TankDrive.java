@@ -8,12 +8,14 @@ import org.photonvision.EstimatedRobotPose;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.Motors.Motor;
 import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
+import RaiderLib.Config.PIDConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,7 +27,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
 
 /* This class declares the subsystem for the robot drivetrain if controllers are connected via CAN. Make sure to go to
  * RobotContainer and uncomment the line declaring this subsystem and comment the line for PWMDrivetrain.
@@ -35,8 +36,11 @@ import frc.robot.Constants.*;
  * that hardware is only being used by 1 command at a time.
  */
 public class TankDrive extends SubsystemBase {
-  /*Class member variables. These variables represent things the class needs to keep track of and use between
-  different method calls. */
+  /*
+   * Class member variables. These variables represent things the class needs to
+   * keep track of and use between
+   * different method calls.
+   */
   private Motor m_leftMaster;
   private Motor m_leftSlave;
   private Motor m_rightMaster;
@@ -45,16 +49,27 @@ public class TankDrive extends SubsystemBase {
   private DifferentialDrivePoseEstimator m_odometry;
   private IMU m_gyro;
 
+  private PIDConstants m_leftPID;
+  private PIDConstants m_rightPID;
+
+  private double m_autoMaxSpeed;
+  private double m_teleopMaxSpeed;
+
   public TankDrive(
       MotorType MotorType,
-      MotorConfiguration MotorConfig,
+      MotorConfiguration rightMotorConfig,
+      MotorConfiguration leftMotorConfig,
       IMU imu,
-      DifferentialDriveKinematics kinematics) {
+      DifferentialDriveKinematics kinematics,
+      PIDConstants rightPID,
+      PIDConstants lefTPID,
+      double autoMaxSpeed,
+      double teleOpMaxSpeed) {
 
-    m_leftMaster = MotorFactory.createMotor(MotorType, MotorConfig);
-    m_leftSlave = MotorFactory.createMotor(MotorType, MotorConfig);
-    m_rightMaster = MotorFactory.createMotor(MotorType, MotorConfig);
-    m_rightSlave = MotorFactory.createMotor(MotorType, MotorConfig);
+    m_leftMaster = MotorFactory.createMotor(MotorType, leftMotorConfig);
+    m_leftSlave = MotorFactory.createMotor(MotorType, leftMotorConfig);
+    m_rightMaster = MotorFactory.createMotor(MotorType, rightMotorConfig);
+    m_rightSlave = MotorFactory.createMotor(MotorType, rightMotorConfig);
 
     m_odometry = new DifferentialDrivePoseEstimator(kinematics,
         new Rotation2d(0),
@@ -67,49 +82,20 @@ public class TankDrive extends SubsystemBase {
     m_leftMaster.setFollower(m_leftSlave);
     m_rightMaster.setFollower(m_rightSlave);
 
-    // Invert the left side so both sides drive forward with positive motor outputs
-    // m_leftMaster.setInverted(false);
-    // m_leftSlave.setInverted(false);
-    // m_rightMaster.setInverted(true);
-    // m_rightSlave.setInverted(true);
-    // TODO implement inversion for motors
-
-    // m_leftMaster.setIdleMode(IdleMode.kCoast);
-    // m_leftSlave.setIdleMode(IdleMode.kCoast);
-    // m_rightMaster.setIdleMode(IdleMode.kCoast);
-    // m_rightSlave.setIdleMode(IdleMode.kCoast);
-    // TODO implement idle modes
-
-    m_leftMasterController.setP(DriveConstants.kLeftPIDF[0], 0);
-    m_leftMasterController.setI(DriveConstants.kLeftPIDF[1], 0);
-    m_leftMasterController.setD(DriveConstants.kLeftPIDF[2], 0);
-    m_leftMasterController.setFF(DriveConstants.kLeftPIDF[3], 0);
-
-    m_leftSlaveController.setP(DriveConstants.kLeftPIDF[0], 0);
-    m_leftSlaveController.setI(DriveConstants.kLeftPIDF[1], 0);
-    m_leftSlaveController.setD(DriveConstants.kLeftPIDF[2], 0);
-    m_leftSlaveController.setFF(DriveConstants.kLeftPIDF[3], 0);
-
-    m_rightMasterController.setP(DriveConstants.kRightPIDF[0], 0);
-    m_rightMasterController.setI(DriveConstants.kRightPIDF[1], 0);
-    m_rightMasterController.setD(DriveConstants.kRightPIDF[2], 0);
-    m_rightMasterController.setFF(DriveConstants.kRightPIDF[3], 0);
-
-    m_rightSlaveController.setP(DriveConstants.kRightPIDF[0], 0);
-    m_rightSlaveController.setI(DriveConstants.kRightPIDF[1], 0);
-    m_rightSlaveController.setD(DriveConstants.kRightPIDF[2], 0);
-    m_rightSlaveController.setFF(DriveConstants.kRightPIDF[3], 0);
-
     resetOdometry();
     resetGyro();
     resetEncoders();
   }
 
-  /*Method to control the drivetrain using arcade drive. Arcade drive takes a speed in the X (forward/back) direction
-   * and a rotation about the Z (turning the robot about it's center) and uses these to control the drivetrain motors */
+  /*
+   * Method to control the drivetrain using arcade drive. Arcade drive takes a
+   * speed in the X (forward/back) direction
+   * and a rotation about the Z (turning the robot about it's center) and uses
+   * these to control the drivetrain motors
+   */
   public void drive(double speed, double rotation, boolean squareInputs, boolean isAuto) {
-    speed = MathUtil.applyDeadband(speed, OperatorConstants.kDriveDeadband);
-    rotation = MathUtil.applyDeadband(rotation, OperatorConstants.kTurnDeadband);
+    speed = MathUtil.applyDeadband(speed, 0.15); // HARD-CODED
+    rotation = MathUtil.applyDeadband(rotation, 0.15); // HARD-CODED
     speed = MathUtil.clamp(speed, -1.0, 1.0);
     rotation = MathUtil.clamp(rotation, -1.0, 1.0);
 
@@ -124,11 +110,11 @@ public class TankDrive extends SubsystemBase {
     double rightSpeed = speed + rotation;
 
     if (isAuto) {
-      leftSpeed *= AutoConstants.kMaxAutoRPM;
-      rightSpeed *= AutoConstants.kMaxAutoRPM;
+      leftSpeed *= m_autoMaxSpeed;
+      rightSpeed *= m_autoMaxSpeed;
     } else {
-      leftSpeed *= maxSpeed;
-      rightSpeed *= maxSpeed;
+      leftSpeed *= m_teleopMaxSpeed;
+      rightSpeed *= m_teleopMaxSpeed;
     }
 
     runLeft(leftSpeed);
@@ -136,13 +122,11 @@ public class TankDrive extends SubsystemBase {
   }
 
   public void runLeft(double rpm) {
-    m_leftMasterController.setReference(rpm, ControlType.kVelocity);
-    m_leftSlaveController.setReference(rpm, ControlType.kVelocity);
+    m_leftMaster.setRPM(rpm);
   }
 
   public void runRight(double rpm) {
-    m_rightMasterController.setReference(rpm, ControlType.kVelocity);
-    m_rightSlaveController.setReference(rpm, ControlType.kVelocity);
+    m_rightMaster.setRPM(rpm);
   }
 
   public void stop() {
@@ -150,27 +134,27 @@ public class TankDrive extends SubsystemBase {
   }
 
   public double getRightPosition() {
-    return m_rightEncoder.getPosition();
+    return m_rightMaster.getPosition();
   }
 
   public double getLeftPosition() {
-    return m_leftEncoder.getPosition();
+    return m_leftMaster.getPosition();
   }
 
   public double getRightVelocity() {
-    return m_rightEncoder.getVelocity();
+    return m_rightMaster.getRPM();
   }
 
   public double getLeftVelocity() {
-    return m_leftEncoder.getVelocity();
+    return m_leftMaster.getRPM();
   }
 
   public double getRightVelocityMeters() {
-    return getRightVelocity() * DriveConstants.kVelocityConversionFactor;
+    return getRightVelocity() * 0.15; // HARD-CODED
   }
 
   public double getLeftVelocityMeters() {
-    return getLeftVelocity() * DriveConstants.kVelocityConversionFactor;
+    return getLeftVelocity() * 0.15; // HARD-CODED
   }
 
   public double getHeading() {
@@ -192,35 +176,23 @@ public class TankDrive extends SubsystemBase {
     m_gyro.reset();
   }
 
-  public void resetEncoders() {
-    m_leftEncoder.setPosition(0);
-    m_rightEncoder.setPosition(0);
-  }
-
-  public void toggleGear() {
-    isHighGear = !isHighGear;
-    if (isHighGear) {
-      maxSpeed = DriveConstants.kMaxHighRPM;
-    } else {
-      maxSpeed = DriveConstants.kMaxLowRPM;
-    }
-  }
-
-  public boolean getGear() {
-    return isHighGear;
+  public void resetEncoders() { // TODO implement
+    // m_leftEncoder.setPosition(0);
+    // m_rightEncoder.setPosition(0);
   }
 
   @Override
   public void periodic() {
-    /*This method will be called once per scheduler run. It can be used for running tasks we know we want to update each
-     * loop, such as processing sensor data. Our drivetrain is simple so we don't have anything to put here. */
+    /*
+     * This method will be called once per scheduler run. It can be used for running
+     * tasks we know we want to update each
+     * loop, such as processing sensor data. Our drivetrain is simple so we don't
+     * have anything to put here.
+     */
 
     m_odometry.update(
         Rotation2d.fromDegrees(getHeading()),
         new DifferentialDriveWheelPositions(getLeftPosition(), getRightPosition()));
-
-    EstimatedRobotPose pose = m_camera.getEstimatedPose();
-    m_odometry.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
 
     // m_field.setRobotPose(m_odometry.getPoseMeters());
 
@@ -229,6 +201,5 @@ public class TankDrive extends SubsystemBase {
     SmartDashboard.putNumber("heading", getHeading());
     SmartDashboard.putNumber("leftVelocity", getLeftVelocityMeters());
     SmartDashboard.putNumber("rightVelocity", getRightVelocityMeters());
-    SmartDashboard.putString("Gear", isHighGear ? "High" : "Low");
   }
 }

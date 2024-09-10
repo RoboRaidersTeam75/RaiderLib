@@ -35,4 +35,8 @@ public class NavX implements IMU {
     // TODO: idk if understood the point of this function but hopefully this works
     navX.setAngleAdjustment(angle.getDegrees()); // set angle adjustment new angle
   }
+
+  public void reset() {
+    navX.setAngleAdjustment(0);
+  }
 }
