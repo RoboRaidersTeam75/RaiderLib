@@ -17,6 +17,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class Falcon500 implements Motor {
   /** PID SLOTS: slot 0 is velocity slot 1 is position */
   private final TalonFX m_Falcon500;
+  private Motor m_follower = null;
 
   private final DutyCycleOut m_PercentOut = new DutyCycleOut(0);
 
@@ -49,6 +50,7 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_PercentOut.withOutput(speed).withEnableFOC(false));
     }
+    m_follower.setPercentOut(speed);
   }
 
   public void setRPM(double RPM) {
@@ -57,6 +59,7 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_VelocityOut.withVelocity(RPM).withEnableFOC(false));
     }
+    m_follower.setRPM(RPM);
   }
 
   public void setPosition(double Rotations) {
@@ -65,6 +68,7 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_PositionVoltage.withPosition(Rotations).withEnableFOC(false));
     }
+    m_follower.setPosition(Rotations);
   }
 
   public void setVoltage(double voltage) {
@@ -73,6 +77,7 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_SysIDRequest.withOutput(voltage).withEnableFOC(false));
     }
+    m_follower.setVoltage(voltage);
   }
 
   public double getRPM() {
@@ -143,6 +148,10 @@ public class Falcon500 implements Motor {
 
   public MotorType getType() {
     return MotorType.FALCON500;
+  }
+
+  public void setFollower(Motor follower) {
+    m_follower = follower;
   }
 
   private void configMotor(MotorConfiguration config) {
