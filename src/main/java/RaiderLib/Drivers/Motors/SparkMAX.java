@@ -19,13 +19,18 @@ public class SparkMAX implements Motor {
   private Motor m_follower;
   private final SparkPIDController m_Controller;
   private final RelativeEncoder m_Encoder;
+  private final MotorConfiguration m_Config;
 
   public SparkMAX(MotorConfiguration config) {
     m_SparkMAX = new CANSparkMax(config.CANID, CANSparkLowLevel.MotorType.kBrushless);
     m_Controller = m_SparkMAX.getPIDController();
     m_Encoder = m_SparkMAX.getEncoder();
-
+    m_Config = config;
     configMotor(config);
+  }
+
+  public MotorConfiguration getConfiguration() {
+    return m_Config;
   }
 
   public void setPercentOut(double speed) {

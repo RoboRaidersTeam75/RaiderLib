@@ -1,5 +1,6 @@
 package RaiderLib.Drivers.Motors;
 
+import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.PIDConstants;
 
 public interface Motor {
@@ -10,6 +11,11 @@ public interface Motor {
     CANSPARKMAX,
     CANSPARKFLEX
   }
+
+  /**
+   * gets motor configuration
+   */
+  public MotorConfiguration getConfiguration();
 
   /**
    * sets the speed from -100% to 100%

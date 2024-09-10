@@ -3,6 +3,7 @@ package RaiderLib.Dashboard;
 import java.util.EnumSet;
 
 import RaiderLib.Config.PIDConstants;
+import RaiderLib.Drivers.Motors.Motor;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEvent;
@@ -68,5 +69,11 @@ public class TuningTab {
         event -> {
           constants.kF = event.valueData.value.getDouble();
         });
+  }
+
+  static void tuneMotorPIDs(Motor motor, String title) {
+    tunePIDs(title + " slot0", motor.getConfiguration().PIDConfigs.slot0Configs);
+    tunePIDs(title + " slot1", motor.getConfiguration().PIDConfigs.slot1Configs);
+    tunePIDs(title + " slot2", motor.getConfiguration().PIDConfigs.slot2Configs);
   }
 }

@@ -19,6 +19,8 @@ public class Falcon500 implements Motor {
   private final TalonFX m_Falcon500;
   private Motor m_follower = null;
 
+  private final MotorConfiguration m_Config;
+
   private final DutyCycleOut m_PercentOut = new DutyCycleOut(0);
 
   private final VoltageOut m_SysIDRequest = new VoltageOut(0);
@@ -39,9 +41,14 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500 = new TalonFX(config.CANID);
     }
+    m_Config = config;
     configMotor(config);
     m_Falcon500.setPosition(0);
     isLicensed = m_Falcon500.getIsProLicensed().waitForUpdate(5).getValue();
+  }
+
+  public MotorConfiguration getConfiguration() {
+    return m_Config;
   }
 
   public void setPercentOut(double speed) {

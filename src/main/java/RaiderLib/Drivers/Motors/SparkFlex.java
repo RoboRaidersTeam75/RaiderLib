@@ -20,12 +20,18 @@ public class SparkFlex implements Motor {
   private final SparkPIDController m_Controller;
   private final RelativeEncoder m_Encoder;
 
+  private final MotorConfiguration m_Config;
+
   public SparkFlex(MotorConfiguration config) {
     m_SparkFlex = new CANSparkFlex(config.CANID, CANSparkLowLevel.MotorType.kBrushless);
     m_Controller = m_SparkFlex.getPIDController();
     m_Encoder = m_SparkFlex.getEncoder();
-
+    m_Config = config;
     configMotor(config);
+  }
+
+  public MotorConfiguration getConfiguration() {
+    return m_Config;
   }
 
   public void setPercentOut(double speed) {
