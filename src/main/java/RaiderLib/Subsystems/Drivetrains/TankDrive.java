@@ -5,7 +5,6 @@
 package RaiderLib.Subsystems.Drivetrains;
 
 import RaiderLib.Config.MotorConfiguration;
-import RaiderLib.Config.PIDConstants;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.Motors.Motor;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
@@ -40,9 +39,6 @@ public class TankDrive extends SubsystemBase {
 
   private DifferentialDrivePoseEstimator m_odometry;
   private IMU m_gyro;
-
-  private PIDConstants m_leftPID;
-  private PIDConstants m_rightPID;
 
   private double m_autoMaxSpeed;
   private double m_teleopMaxSpeed;
