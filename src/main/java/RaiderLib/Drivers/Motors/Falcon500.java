@@ -17,6 +17,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class Falcon500 implements Motor {
   /** PID SLOTS: slot 0 is velocity slot 1 is position */
   private final TalonFX m_Falcon500;
+
   private Motor m_follower = null;
 
   private final MotorConfiguration m_Config;

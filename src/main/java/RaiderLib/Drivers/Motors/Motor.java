@@ -12,9 +12,7 @@ public interface Motor {
     CANSPARKFLEX
   }
 
-  /**
-   * gets motor configuration
-   */
+  /** gets motor configuration */
   public MotorConfiguration getConfiguration();
 
   /**

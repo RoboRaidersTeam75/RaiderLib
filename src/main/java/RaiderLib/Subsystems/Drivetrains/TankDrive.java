@@ -4,27 +4,19 @@
 
 package RaiderLib.Subsystems.Drivetrains;
 
-import org.photonvision.EstimatedRobotPose;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.ControlType;
-
 import RaiderLib.Config.MotorConfiguration;
+import RaiderLib.Config.PIDConstants;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.Motors.Motor;
-import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
-import RaiderLib.Config.PIDConstants;
+import RaiderLib.Drivers.Motors.MotorFactory;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -54,6 +46,7 @@ public class TankDrive extends SubsystemBase {
 
   private double m_autoMaxSpeed;
   private double m_teleopMaxSpeed;
+  private double velocityConversionFactor;
 
   public TankDrive(
       MotorType MotorType,
@@ -61,26 +54,31 @@ public class TankDrive extends SubsystemBase {
       MotorConfiguration leftMotorConfig,
       IMU imu,
       DifferentialDriveKinematics kinematics,
-      PIDConstants rightPID,
-      PIDConstants lefTPID,
       double autoMaxSpeed,
-      double teleOpMaxSpeed) {
+      double teleOpMaxSpeed,
+      double wheelDiameter) {
 
     m_leftMaster = MotorFactory.createMotor(MotorType, leftMotorConfig);
     m_leftSlave = MotorFactory.createMotor(MotorType, leftMotorConfig);
     m_rightMaster = MotorFactory.createMotor(MotorType, rightMotorConfig);
     m_rightSlave = MotorFactory.createMotor(MotorType, rightMotorConfig);
 
-    m_odometry = new DifferentialDrivePoseEstimator(kinematics,
-        new Rotation2d(0),
-        0,
-        0,
-        new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
+    m_odometry =
+        new DifferentialDrivePoseEstimator(
+            kinematics,
+            new Rotation2d(0),
+            0,
+            0,
+            new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
 
     m_gyro = imu;
 
     m_leftMaster.setFollower(m_leftSlave);
     m_rightMaster.setFollower(m_rightSlave);
+
+    m_autoMaxSpeed = autoMaxSpeed;
+    m_teleopMaxSpeed = teleOpMaxSpeed;
+    velocityConversionFactor = Math.PI * wheelDiameter / 60;
 
     resetOdometry();
     resetGyro();
@@ -150,11 +148,11 @@ public class TankDrive extends SubsystemBase {
   }
 
   public double getRightVelocityMeters() {
-    return getRightVelocity() * 0.15; // HARD-CODED
+    return getRightVelocity() * velocityConversionFactor;
   }
 
   public double getLeftVelocityMeters() {
-    return getLeftVelocity() * 0.15; // HARD-CODED
+    return getLeftVelocity() * velocityConversionFactor;
   }
 
   public double getHeading() {
@@ -194,10 +192,6 @@ public class TankDrive extends SubsystemBase {
         Rotation2d.fromDegrees(getHeading()),
         new DifferentialDriveWheelPositions(getLeftPosition(), getRightPosition()));
 
-    // m_field.setRobotPose(m_odometry.getPoseMeters());
-
-    // SmartDashboard.putNumber("leftEncoderPosition", getLeftPosition());
-    // SmartDashboard.putNumber("rightEncoderPosition", getRightPosition());
     SmartDashboard.putNumber("heading", getHeading());
     SmartDashboard.putNumber("leftVelocity", getLeftVelocityMeters());
     SmartDashboard.putNumber("rightVelocity", getRightVelocityMeters());

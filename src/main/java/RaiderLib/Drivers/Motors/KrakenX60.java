@@ -17,6 +17,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class KrakenX60 implements Motor {
   /** PID SLOTS: slot 0 is velocity slot 1 is position */
   private final TalonFX m_KrakenX60;
+
   private Motor m_follower;
 
   private final MotorConfiguration m_Config;

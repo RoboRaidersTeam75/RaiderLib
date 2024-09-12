@@ -4,38 +4,40 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 public class Pigeon2 implements IMU {
 
-    private com.ctre.phoenix6.hardware.Pigeon2 pigeon; // this is what we get for naming the class the same as in the
-                                                       // library
+  private com.ctre.phoenix6.hardware.Pigeon2
+      pigeon; // this is what we get for naming the class the same as in the
 
-    public Pigeon2(int CANID) {
-        pigeon = new com.ctre.phoenix6.hardware.Pigeon2(CANID);
-    }
+  // library
 
-    public double getAngle() {
-        return pigeon.getAngle();
-    }
+  public Pigeon2(int CANID) {
+    pigeon = new com.ctre.phoenix6.hardware.Pigeon2(CANID);
+  }
 
-    public double getRoll() {
-        return pigeon.getRoll().getValueAsDouble();
-    }
+  public double getAngle() {
+    return pigeon.getAngle();
+  }
 
-    public double getPitch() {
-        return pigeon.getPitch().getValueAsDouble();
-    }
+  public double getRoll() {
+    return pigeon.getRoll().getValueAsDouble();
+  }
 
-    public double getYaw() {
-        return pigeon.getYaw().getValueAsDouble();
-    }
+  public double getPitch() {
+    return pigeon.getPitch().getValueAsDouble();
+  }
 
-    public Rotation2d getRotation2d() {
-        return Rotation2d.fromDegrees(pigeon.getYaw().getValueAsDouble());
-    }
+  public double getYaw() {
+    return pigeon.getYaw().getValueAsDouble();
+  }
 
-    public void setAngle(Rotation2d angle) {
-        pigeon.setYaw(angle.getDegrees());
-    }
+  public Rotation2d getRotation2d() {
+    return Rotation2d.fromDegrees(pigeon.getYaw().getValueAsDouble());
+  }
 
-    public void reset() {
-        pigeon.setYaw(0);
-    }
+  public void setAngle(Rotation2d angle) {
+    pigeon.setYaw(angle.getDegrees());
+  }
+
+  public void reset() {
+    pigeon.setYaw(0);
+  }
 }
