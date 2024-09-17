@@ -20,6 +20,7 @@ public class AutoTabConfig {
    * If present, the pose should be the first character in the word
    * 
    * Create all paths for the blue alliance
+   * Path names should be in the format of "A-B", where A is the starting position and B is the ending position
    */
 
    public static final double kMaxSpeed = 5.0;
