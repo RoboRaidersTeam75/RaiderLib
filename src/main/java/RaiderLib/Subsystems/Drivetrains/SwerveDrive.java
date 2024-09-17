@@ -70,6 +70,10 @@ public class SwerveDrive extends SubsystemBase {
     m_imu.setAngle(new Rotation2d(0));
   }
 
+  public Pose2d getPose() {
+    return swerveOdometry.getEstimatedPosition();
+  }
+
   public void periodic() {
     swerveOdometry.update(m_imu.getRotation2d(), getModulePositions());
   }

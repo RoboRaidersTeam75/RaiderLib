@@ -1,7 +1,13 @@
 package RaiderLib.Dashboard;
 
+import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
+
+import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -18,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
@@ -25,6 +32,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class AutoTab extends SubsystemBase {
   private List<ChoreoTrajectory> m_trajectories = new ArrayList<>();
@@ -33,8 +41,7 @@ public class AutoTab extends SubsystemBase {
   private Alliance m_alliance;
   private Field2d m_field;
   private HashMap<Character, Command> m_actionMap;
-  private Command m_driveCommand;
-  private Object m_driveSubsystem;
+  private SwerveDrive m_drivetrain;
   private List<Command> m_startCommands;
   private List<Command> m_endCommands;
   private HashMap<Character, Pose2d> m_startPositions;
@@ -44,8 +51,7 @@ public class AutoTab extends SubsystemBase {
 
   public AutoTab(
       HashMap<Character, Command> actionMap,
-      Command driveCommand,
-      Object driveSubsystem,
+      SwerveDrive drivetrain,
       List<Command> startCommands,
       List<Command> endCommands,
       HashMap<Character, Pose2d> startPositions) {
@@ -59,8 +65,7 @@ public class AutoTab extends SubsystemBase {
     m_field = new Field2d();
 
     m_actionMap = actionMap;
-    m_driveCommand = driveCommand;
-    m_driveSubsystem = driveSubsystem;
+    m_drivetrain = drivetrain;
     m_startCommands = startCommands;
     m_endCommands = endCommands;
     m_startPositions = startPositions;
@@ -81,7 +86,7 @@ public class AutoTab extends SubsystemBase {
       ChoreoTrajectory pathTraj = m_trajectories.get(i);
       List<Pose2d> poses = Arrays.asList(pathTraj.getPoses());
       Trajectory displayTraj =
-          TrajectoryGenerator.generateTrajectory(poses, new TrajectoryConfig(5, 3));
+          TrajectoryGenerator.generateTrajectory(poses, new TrajectoryConfig(AutoTabConfig.kMaxSpeed, AutoTabConfig.kMaxAcceleration));
       m_field.getObject("traj" + i).setTrajectory(displayTraj);
     }
   }
@@ -158,16 +163,46 @@ public class AutoTab extends SubsystemBase {
 
     char lastPose = ' ';
     for (int i = 0; i < words.length; i++) {
+      ParallelCommandGroup group = new ParallelCommandGroup();
       for (int j = 0; j < words[i].length(); j++) {
-        if (Character.isLetter(words[i].charAt(j))) {
+        char current = words[i].charAt(j);
+        if (Character.isLetter(current)) {
           if (i == 0) {
-            lastPose = words[i].charAt(j);
+            lastPose = current;
             continue;
           }
-          if (lastPose != ' ') {}
+          if (lastPose != ' ') {
+            try {
+              ChoreoTrajectory path = Choreo.getTrajectory("" + lastPose + "-" + current);
+              m_trajectories.add(path);
+              group.addCommands(Choreo.choreoSwerveCommand(
+                path,
+                m_drivetrain::getPose,
+                new PIDController(AutoTabConfig.kPXController, 0, 0),
+                new PIDController(AutoTabConfig.kPXController, 0, 0),
+                new PIDController(AutoTabConfig.kPThetaController, 0, 0),
+                (ChassisSpeeds speeds) -> {
+                  m_drivetrain.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond, false);
+                },
+                () -> {
+                    Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+                    return alliance.isPresent() && alliance.get() == Alliance.Red;
+                },
+                m_drivetrain
+              ));
+            } catch (Exception e) {
+              setFeedback("Path File Not Found");
+              m_autoCommand = Commands.runOnce(() -> {});
+            }
+          }
+        } else if (Character.isDigit(current) && m_actionMap.containsKey(current)) {
+          group.addCommands(m_actionMap.get(current));
         }
       }
+      finalPath.addCommands(group);
     }
+    setFeedback("Successfully Created Auto Sequence!");
+    m_autoCommand = finalPath;
   }
 
   public Command getAutoCommand() {
