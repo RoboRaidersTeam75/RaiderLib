@@ -23,6 +23,15 @@ public class MotorConfiguration {
     public PIDConstants slot0Configs = new PIDConstants();
     public PIDConstants slot1Configs = new PIDConstants();
     public PIDConstants slot2Configs = new PIDConstants();
+    private PIDConstants nullConfig = new PIDConstants(0, 0, 0, 0);
+
+    public boolean isConfigured() {
+      if (slot0Configs.equals(nullConfig)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
   public class GeneralConfigs {

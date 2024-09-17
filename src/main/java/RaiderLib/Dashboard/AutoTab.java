@@ -1,7 +1,6 @@
 package RaiderLib.Dashboard;
 
 import com.choreo.lib.ChoreoTrajectory;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -21,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -50,8 +48,7 @@ public class AutoTab extends SubsystemBase {
       Object driveSubsystem,
       List<Command> startCommands,
       List<Command> endCommands,
-      HashMap<Character, Pose2d> startPositions
-      ) {
+      HashMap<Character, Pose2d> startPositions) {
     NetworkTableInstance nt = NetworkTableInstance.getDefault();
     NetworkTable table = nt.getTable("Shuffleboard").getSubTable("Customize Auto");
 
@@ -167,9 +164,7 @@ public class AutoTab extends SubsystemBase {
             lastPose = words[i].charAt(j);
             continue;
           }
-          if (lastPose != ' ') {
-            
-          }
+          if (lastPose != ' ') {}
         }
       }
     }
@@ -186,10 +181,10 @@ public class AutoTab extends SubsystemBase {
   @Override
   public void periodic() {
     if (DriverStation.isDisabled()) {
-      if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() != m_alliance) {
+      if (DriverStation.getAlliance().isPresent()
+          && DriverStation.getAlliance().get() != m_alliance) {
         m_alliance = DriverStation.getAlliance().get();
       }
     }
   }
-
 }
