@@ -80,8 +80,23 @@ public class MotorConfiguration {
     return this;
   }
 
-  public MotorConfiguration setCurrentConfigs(CurrentConfigs currentConfigs) {
-    this.currentConfigs = currentConfigs;
+  public MotorConfiguration setSupplyCurrentLimit(int supplyCurrentLimit) {
+    this.currentConfigs.SupplyCurrentLimit = supplyCurrentLimit;
+    return this;
+  }
+
+  public MotorConfiguration setSupplyCurrentThresholdAmps(double supplyCurrentThresholdAmps) {
+    this.currentConfigs.SupplyCurrentThresholdAmps = supplyCurrentThresholdAmps;
+    return this;
+  }
+
+  public MotorConfiguration setSupplyCurrentThresholdSeconds(double supplyCurrentThresholdSeconds) {
+    this.currentConfigs.SupplyCurrentThresholdSeconds = supplyCurrentThresholdSeconds;
+    return this;
+  }
+
+  public MotorConfiguration setStatorCurrentLimit(int statorCurrentLimit) {
+    this.currentConfigs.StatorCurrentLimit = statorCurrentLimit;
     return this;
   }
 

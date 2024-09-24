@@ -1,14 +1,18 @@
 package frc.robot;
 
 import RaiderLib.Config.MotorConfiguration;
+import RaiderLib.Config.PIDConstants;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.IMUs.NavX;
 import RaiderLib.Drivers.IMUs.Pigeon2;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
 import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
 import RaiderLib.Subsystems.Drivetrains.TankDrive;
-import RaiderLib.Util.SwerveConstants;
+import RaiderLib.Config.SwerveConstants;
 import RaiderLib.Logging.Logger;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -33,9 +37,42 @@ public class RobotContainer {
 
   private final IMU m_Imu = new Pigeon2(0);
 
-  private final SwerveConstants swerveConstants = new SwerveConstants();
+  double wheelBase = Units.inchesToMeters(22.5);
+  double trackWidth = Units.inchesToMeters(22.5);
+  double wheelCircumference = 0;
 
- 
+  private final SwerveConstants swerveConstants = new SwerveConstants()
+  .setKinematics(new SwerveDriveKinematics(
+    new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+    new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+    new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+    new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+  ))
+  .setWheelBase(wheelBase)
+  .setTrackWidth(trackWidth)
+  .setWheelCircumference(wheelCircumference)
+  .setDriveGearRatio(6.75 / 1.0)
+  .setAngleGearRatio(12.8 / 1.0)
+  .setMaxSpeed(6);
+
+  private MotorConfiguration angleTemplate = new MotorConfiguration()
+  .setSupplyCurrentLimit(40)
+  .setSupplyCurrentThresholdAmps(40)
+  .setSupplyCurrentThresholdSeconds(.1)
+  .setOpenLoopRampRateSeconds(.25)
+  .setClosedLoopRampRateSeconds(0)
+  .setCanbus("75Drive") // Neutral modes??? Angle offsets??
+  .setPID(new PIDConstants(4.8, 0, 0));
+
+  private MotorConfiguration driveTemplate = new MotorConfiguration()
+  .setSupplyCurrentLimit(40)
+  .setSupplyCurrentThresholdAmps(60)
+  .setSupplyCurrentThresholdSeconds(.1)
+  .setOpenLoopRampRateSeconds(.25)
+  .setClosedLoopRampRateSeconds(0)
+  .setPID(new PIDConstants(.05, 0, 0));
+
+  
 
   private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.KRAKENX60, new MotorConfiguration(), new MotorConfiguration(), m_Imu);
   /* Driver Buttons */
