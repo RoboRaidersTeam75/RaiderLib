@@ -26,10 +26,14 @@ public class SwerveDrive extends SubsystemBase {
       MotorType type,
       MotorConfiguration driveConfig,
       MotorConfiguration angleConfig,
+      int[] driveMotorCanIds,
+      int[] angleMotorCanIds,
       IMU imu) {
 
     SwerveModule[] modules = new SwerveModule[4];
     for (int i = 0; i < 4; i++) {
+      driveConfig.setCANID(driveMotorCanIds[i]);
+      angleConfig.setCANID(angleMotorCanIds[i]);
       modules[i] = new SwerveModule(i, constants, type, driveConfig, angleConfig);
     }
 
