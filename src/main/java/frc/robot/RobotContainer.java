@@ -1,5 +1,14 @@
 package frc.robot;
 
+import RaiderLib.Config.MotorConfiguration;
+import RaiderLib.Drivers.IMUs.IMU;
+import RaiderLib.Drivers.IMUs.NavX;
+import RaiderLib.Drivers.IMUs.Pigeon2;
+import RaiderLib.Drivers.Motors.Motor.MotorType;
+import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
+import RaiderLib.Subsystems.Drivetrains.TankDrive;
+import RaiderLib.Util.SwerveConstants;
+import RaiderLib.Logging.Logger;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -22,6 +31,13 @@ public class RobotContainer {
 
   private final CommandXboxController m_XboxController = new CommandXboxController(2);
 
+  private final IMU m_Imu = new Pigeon2(0);
+
+  private final SwerveConstants swerveConstants = new SwerveConstants();
+
+ 
+
+  private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.KRAKENX60, new MotorConfiguration(), new MotorConfiguration(), m_Imu);
   /* Driver Buttons */
 
   /*Auto Chooser Config */
@@ -29,8 +45,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
-   
+
     DriverStation.startDataLog(DataLogManager.getLog());
   }
 
@@ -41,7 +56,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    m_Swerve.setDefaultCommand(
+      new TeleopSwerve(
+          m_Swerve,
+          () -> LeftStick.getY(),
+          () -> LeftStick.getX(),
+          () -> RightStick.getX()
+         ));
     
+
   }
 
   /**
