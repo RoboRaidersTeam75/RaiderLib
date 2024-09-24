@@ -29,4 +29,25 @@ public class PIDConstants {
     this.kD = d;
     this.kF = 0.0;
   }
+
+  public PIDConstants setP(double p) {
+    this.kP = p;
+    return this;
+  }
+
+  public PIDConstants setI(double i) {
+    this.kI = i;
+    return this;
+  }
+
+  public PIDConstants setD(double d) {
+    this.kD = d;
+    return this;
+  }
+
+  public PIDConstants setFF(double f) {
+    this.kF = f;
+    return this;
+  }
+  
 }

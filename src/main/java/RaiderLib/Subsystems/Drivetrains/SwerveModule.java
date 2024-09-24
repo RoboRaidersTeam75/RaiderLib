@@ -1,12 +1,12 @@
 package RaiderLib.Subsystems.Drivetrains;
 
 import RaiderLib.Config.MotorConfiguration;
+import RaiderLib.Config.SwerveConstants;
 import RaiderLib.Drivers.Motors.Motor;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
 import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Util.Conversions;
 import RaiderLib.Util.ModuleState;
-import RaiderLib.Util.SwerveConstants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
