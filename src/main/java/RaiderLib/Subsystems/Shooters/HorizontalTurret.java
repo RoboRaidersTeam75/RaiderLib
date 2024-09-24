@@ -4,11 +4,68 @@
 
 package RaiderLib.Subsystems.Shooters;
 
+import RaiderLib.Config.MotorConfiguration;
+import RaiderLib.Drivers.DigitalInputs.LimitSwitch;
+import RaiderLib.Drivers.Motors.Motor;
+import RaiderLib.Drivers.Motors.MotorFactory;
+import RaiderLib.Drivers.Motors.Motor.MotorType;
+import RaiderLib.Logging.Logger;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class HorizontalTurret extends SubsystemBase {
-  /** Creates a new HorizontalTurret. */
-  public HorizontalTurret() {}
+
+  public enum LimitType {
+    HARD,
+    SEMISOFT
+  };
+
+  private Motor m_angler;
+  private LimitSwitch m_leftLimit;
+  private LimitSwitch m_rightLimit;
+  private LimitType m_limitType;
+
+  public HorizontalTurret(
+    MotorType motorType,
+    MotorConfiguration motorConfig,
+    LimitType limitType,
+    LimitSwitch limit
+  ) {
+    if (limitType == LimitType.HARD) {
+      m_angler = null;
+      Logger.log("Turret limit error", "Limit switches not provided");
+      System.out.println("TURRET LIMIT ERROR: must provide two limits switches when using hard limits");
+      return;
+    }
+    m_angler = MotorFactory.createMotor(motorType, motorConfig);
+    m_leftLimit = limit;
+    m_limitType = limitType;
+  }
+
+  public HorizontalTurret(
+    MotorType motorType,
+    MotorConfiguration motorConfig,
+    LimitType limitType,
+    LimitSwitch limit1,
+    LimitSwitch limit2
+  ) {
+    if (limitType == LimitType.SEMISOFT) {
+      m_angler = null;
+      Logger.log("Turret limit error", "Extra limit switch provided");
+      System.out.println("Two limit switches provided, second one will be ignored");
+    }
+    m_angler = MotorFactory.createMotor(motorType, motorConfig);
+    m_leftLimit = limit1;
+    m_rightLimit = limit2;
+    m_limitType = limitType;
+  }
+
+  public void setAngle(double angle) { 
+
+  }
+
+  public void setSpeed(double speed) { // percent
+
+  }
 
   @Override
   public void periodic() {
