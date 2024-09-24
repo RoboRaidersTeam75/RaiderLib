@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.TeleopSwerve;
 
 
 /**
@@ -70,11 +71,15 @@ public class RobotContainer {
   .setSupplyCurrentThresholdSeconds(.1)
   .setOpenLoopRampRateSeconds(.25)
   .setClosedLoopRampRateSeconds(0)
+  .setCanbus("75Drive")
   .setPID(new PIDConstants(.05, 0, 0));
 
   
 
-  private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.KRAKENX60, new MotorConfiguration(), new MotorConfiguration(), m_Imu);
+  private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.KRAKENX60, driveTemplate, angleTemplate, 
+        new int[]{0,0,0,0},
+        new int[]{0,0,0,0},
+        m_Imu);
   /* Driver Buttons */
 
   /*Auto Chooser Config */
@@ -84,6 +89,8 @@ public class RobotContainer {
   public RobotContainer() {
 
     DriverStation.startDataLog(DataLogManager.getLog());
+
+    configureButtonBindings();
   }
 
   /**
@@ -98,9 +105,9 @@ public class RobotContainer {
           m_Swerve,
           () -> LeftStick.getY(),
           () -> LeftStick.getX(),
-          () -> RightStick.getX()
+          () -> RightStick.getX() ,
+          true
          ));
-    
 
   }
 
