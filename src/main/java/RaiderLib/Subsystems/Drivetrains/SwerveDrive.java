@@ -1,9 +1,9 @@
 package RaiderLib.Subsystems.Drivetrains;
 
 import RaiderLib.Config.MotorConfiguration;
+import RaiderLib.Config.SwerveConstants;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
-import RaiderLib.Util.SwerveConstants;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

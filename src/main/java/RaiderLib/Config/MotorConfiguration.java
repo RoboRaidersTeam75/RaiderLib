@@ -1,5 +1,7 @@
 package RaiderLib.Config;
 
+import RaiderLib.Drivers.Motors.Motor;
+
 /*
  * current limits
  * time exceeding current limit
@@ -67,4 +69,108 @@ public class MotorConfiguration {
   public SoftLimits softLimits = new SoftLimits();
 
   public MotorConfiguration() {}
+
+  public MotorConfiguration setCANID(int CANID) {
+    this.CANID = CANID;
+    return this;
+  }
+
+  public MotorConfiguration setCanbus(String canbus) {
+    this.canbus = canbus;
+    return this;
+  }
+
+  public MotorConfiguration setCurrentConfigs(CurrentConfigs currentConfigs) {
+    this.currentConfigs = currentConfigs;
+    return this;
+  }
+
+  public MotorConfiguration setPID(PIDConstants constants) {
+    this.PIDConfigs.slot0Configs = constants;
+    return this;
+  }
+
+  public MotorConfiguration setPIDSlot0(PIDConstants constants) {
+    this.PIDConfigs.slot0Configs = constants;
+    return this;
+  }
+
+  public MotorConfiguration setPIDSlot1(PIDConstants constants) {
+    this.PIDConfigs.slot1Configs = constants;
+    return this;
+  }
+
+  public MotorConfiguration setPIDSlot2(PIDConstants constants) {
+    this.PIDConfigs.slot2Configs = constants;
+    return this;
+  }
+
+  public MotorConfiguration setMotorInvert(boolean motorInvert) {
+    this.generalConfigs.motorInvert = motorInvert;
+    return this;
+  }
+
+  public MotorConfiguration setBrakeModeEnabled(boolean brakeModeEnabled) {
+    this.generalConfigs.brakeModeEnabled = brakeModeEnabled;
+    return this;
+  }
+
+  public MotorConfiguration setSensorToMechanismRatio(double sensorToMechanismRatio) {
+    this.generalConfigs.sensorToMechanismRatio = sensorToMechanismRatio;
+    return this;
+  }
+
+  public MotorConfiguration setClosedLoopRampRateSeconds(double closedLoopRampRateSeconds) {
+    this.rampRates.closedLoopRampRateSeconds = closedLoopRampRateSeconds;
+    return this;
+  }
+
+  public MotorConfiguration setOpenLoopRampRateSeconds(double openLoopRampRateSeconds) {
+    this.rampRates.openLoopRampRateSeconds = openLoopRampRateSeconds;
+    return this;
+  }
+
+  public MotorConfiguration setForwardLimitPort(int forwardLimitPort) {
+    this.hardwareLimits.forwardLimitPort = forwardLimitPort;
+    return this;
+  }
+
+  public MotorConfiguration setReverseLimitPort(int reverseLimitPort) {
+    this.hardwareLimits.reverseLimitPort = reverseLimitPort;
+    return this;
+  }
+
+  public MotorConfiguration setEnableForwardLimit(boolean enableForwardLimit) {
+    this.hardwareLimits.enableForwardLimit = enableForwardLimit;
+    return this;
+  }
+
+  public MotorConfiguration setEnableReverseLimit(boolean enableReverseLimit) {
+    this.hardwareLimits.enableReverseLimit = enableReverseLimit;
+    return this;
+  }
+
+  public MotorConfiguration setEnableForwardSoftLimit(boolean enableForwardSoftLimit) {
+    this.softLimits.enableForwardSoftLimit = enableForwardSoftLimit;
+    return this;
+  }
+
+  public MotorConfiguration setEnableReverseSoftLimit(boolean enableReverseSoftLimit) {
+    this.softLimits.enableReverseSoftLimit = enableReverseSoftLimit;
+    return this;
+  }
+
+  public MotorConfiguration setForwardSoftLimitRotations(double forwardSoftLimitRotations) {
+    this.softLimits.forwardSoftLimitRotations = forwardSoftLimitRotations;
+    return this;
+  }
+
+  public MotorConfiguration setReverseSoftLimitRotations(double reverseSoftLimitRotations) {
+    this.softLimits.reverseSoftLimitRotations = reverseSoftLimitRotations;
+    return this;
+  }
+
+
+
+
 }
