@@ -104,6 +104,10 @@ public class KrakenX60 implements Motor {
     return m_KrakenX60.getSupplyCurrent().refresh().getValue();
   }
 
+  public void resetPosition(double value) {
+    m_KrakenX60.setPosition(value);
+  }
+
   public void setPIDs(PIDConstants constants, int slot) {
     SlotConfigs config = new SlotConfigs();
     config.SlotNumber = slot;

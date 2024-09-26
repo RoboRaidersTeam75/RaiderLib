@@ -72,6 +72,14 @@ public interface Motor {
   public double getCurrent();
 
   /**
+   * gets the current the motor is using from the supply side
+   *
+   * @param value - position (in rotations) to reset the encoder to
+   */
+
+  public void resetPosition(double value);
+
+  /**
    * configs all pids again if needed. This method should not be called often, if single terms need
    * to be changed, use the config[TERM] methods
    *
