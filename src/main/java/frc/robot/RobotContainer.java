@@ -36,49 +36,51 @@ public class RobotContainer {
 
   private final CommandXboxController m_XboxController = new CommandXboxController(2);
 
-  private final IMU m_Imu = new Pigeon2(0);
+  private final IMU m_Imu = new Pigeon2(18, "75Drive");
 
   double wheelBase = Units.inchesToMeters(22.5);
   double trackWidth = Units.inchesToMeters(22.5);
   double wheelCircumference = 0;
 
   private final SwerveConstants swerveConstants = new SwerveConstants()
-  .setKinematics(new SwerveDriveKinematics(
-    new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-    new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-    new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-    new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
-  ))
-  .setWheelBase(wheelBase)
-  .setTrackWidth(trackWidth)
-  .setWheelCircumference(wheelCircumference)
-  .setDriveGearRatio(6.75 / 1.0)
-  .setAngleGearRatio(12.8 / 1.0)
-  .setMaxSpeed(6);
+    .setKinematics(new SwerveDriveKinematics(
+      new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+      new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+      new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+      new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+    ))
+    .setWheelBase(wheelBase)
+    .setTrackWidth(trackWidth)
+    .setWheelCircumference(wheelCircumference)
+    .setDriveGearRatio(6.75 / 1.0)
+    .setAngleGearRatio(12.8 / 1.0)
+    .setMaxSpeed(6)
+    .setAngleOffsets(new double[]{45, 0, 0, 0});
 
   private MotorConfiguration angleTemplate = new MotorConfiguration()
-  .setSupplyCurrentLimit(40)
-  .setSupplyCurrentThresholdAmps(40)
-  .setSupplyCurrentThresholdSeconds(.1)
-  .setOpenLoopRampRateSeconds(.25)
-  .setClosedLoopRampRateSeconds(0)
-  .setCanbus("75Drive") // Neutral modes??? Angle offsets??
-  .setPID(new PIDConstants(4.8, 0, 0));
+    .setSupplyCurrentLimit(40)
+    .setSupplyCurrentThresholdAmps(40)
+    .setSupplyCurrentThresholdSeconds(.1)
+    .setOpenLoopRampRateSeconds(.25)
+    .setClosedLoopRampRateSeconds(0)
+    .setCanbus("75Drive") // Neutral modes??? Angle offsets??
+    .setPID(new PIDConstants(4.8, 0, 0));
 
   private MotorConfiguration driveTemplate = new MotorConfiguration()
-  .setSupplyCurrentLimit(40)
-  .setSupplyCurrentThresholdAmps(60)
-  .setSupplyCurrentThresholdSeconds(.1)
-  .setOpenLoopRampRateSeconds(.25)
-  .setClosedLoopRampRateSeconds(0)
-  .setCanbus("75Drive")
-  .setPID(new PIDConstants(.05, 0, 0));
+    .setSupplyCurrentLimit(40)
+    .setSupplyCurrentThresholdAmps(60)
+    .setSupplyCurrentThresholdSeconds(.1)
+    .setOpenLoopRampRateSeconds(.25)
+    .setClosedLoopRampRateSeconds(0)
+    .setCanbus("75Drive")
+    .setPID(new PIDConstants(.05, 0, 0));
 
   
 
   private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.KRAKENX60, driveTemplate, angleTemplate, 
-        new int[]{0,0,0,0},
-        new int[]{0,0,0,0},
+        new int[]{14, 11, 13, 12},
+        new int[]{24, 21, 23, 22},
+        new int[]{34, 31, 33, 32},
         m_Imu);
   /* Driver Buttons */
 

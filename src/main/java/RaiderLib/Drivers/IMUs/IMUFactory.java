@@ -7,10 +7,10 @@ enum IMUType {
 
 // TODO: implement
 public class IMUFactory {
-  public static IMU createIMU(IMUType type, int CANID) {
+  public static IMU createIMU(IMUType type, int CANID, String canBus) {
     switch (type) {
       case PIGEON2:
-        return new Pigeon2(CANID);
+        return new Pigeon2(CANID, canBus);
       default:
         throw new IllegalArgumentException(
             "Illegal IMU Passed to Factory Method, You probably tried to create a NavX Motor and specified the CAN Bus");

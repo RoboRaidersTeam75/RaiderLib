@@ -9,8 +9,8 @@ public class Pigeon2 implements IMU {
 
   // library
 
-  public Pigeon2(int CANID) {
-    pigeon = new com.ctre.phoenix6.hardware.Pigeon2(CANID);
+  public Pigeon2(int CANID, String canBus) {
+    pigeon = new com.ctre.phoenix6.hardware.Pigeon2(CANID, canBus);
   }
 
   public double getAngle() {

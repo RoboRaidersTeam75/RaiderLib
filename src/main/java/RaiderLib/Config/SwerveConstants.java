@@ -13,6 +13,8 @@ public class SwerveConstants {
 
   public double maxSpeed = 0;
 
+  public double[] angleOffsets;
+
   public SwerveDriveKinematics kinematics;
 
   public SwerveConstants() {}
@@ -49,6 +51,11 @@ public class SwerveConstants {
 
   public SwerveConstants setKinematics(SwerveDriveKinematics kinematics) {
     this.kinematics = kinematics;
+    return this;
+  }
+
+  public SwerveConstants setAngleOffsets(double[] offsets) {
+    this.angleOffsets = offsets;
     return this;
   }
 }

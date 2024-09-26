@@ -58,7 +58,9 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_PercentOut.withOutput(speed).withEnableFOC(false));
     }
-    m_follower.setPercentOut(speed);
+    if (m_follower != null) {
+      m_follower.setPercentOut(speed);
+    }
   }
 
   public void setRPM(double RPM) {
@@ -67,7 +69,9 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_VelocityOut.withVelocity(RPM).withEnableFOC(false));
     }
-    m_follower.setRPM(RPM);
+    if (m_follower != null) {
+      m_follower.setRPM(RPM);
+    }
   }
 
   public void setPosition(double Rotations) {
@@ -76,7 +80,9 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_PositionVoltage.withPosition(Rotations).withEnableFOC(false));
     }
-    m_follower.setPosition(Rotations);
+    if (m_follower != null) {
+      m_follower.setPosition(Rotations);
+    }
   }
 
   public void setVoltage(double voltage) {
@@ -85,7 +91,9 @@ public class Falcon500 implements Motor {
     } else {
       m_Falcon500.setControl(m_SysIDRequest.withOutput(voltage).withEnableFOC(false));
     }
-    m_follower.setVoltage(voltage);
+    if (m_follower != null) {
+      m_follower.setVoltage(voltage);
+    }
   }
 
   public double getRPM() {

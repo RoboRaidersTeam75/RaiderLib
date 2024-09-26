@@ -36,22 +36,30 @@ public class SparkFlex implements Motor {
 
   public void setPercentOut(double speed) {
     m_SparkFlex.set(speed);
-    m_follower.setPercentOut(speed);
+    if (m_follower != null) {
+      m_follower.setPercentOut(speed);
+    }
   }
 
   public void setRPM(double RPM) {
     m_Controller.setReference(RPM, ControlType.kVelocity);
-    m_follower.setRPM(RPM);
+    if (m_follower != null) {
+      m_follower.setRPM(RPM);
+    }
   }
 
   public void setPosition(double Rotations) {
     m_Controller.setReference(Rotations, ControlType.kPosition);
-    m_follower.setPosition(Rotations);
+    if (m_follower != null) {
+      m_follower.setPosition(Rotations);
+    }
   }
 
   public void setVoltage(double voltage) {
     m_SparkFlex.setVoltage(voltage);
-    m_follower.setVoltage(voltage);
+    if (m_follower != null) {
+      m_follower.setVoltage(voltage);
+    }
   }
 
   public double getRPM() {
