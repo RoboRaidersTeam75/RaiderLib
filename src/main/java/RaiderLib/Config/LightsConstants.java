@@ -6,6 +6,8 @@ package RaiderLib.Config;
 
 /** Add your docs here. */
 public class LightsConstants {
-  public double LEDPWMPort = 0;
-  public double bufferLength = 0;
+  public int totalLights = 0;
+  public int numSections = 0;
+  public int LEDPWMPort = 0;
+  public int bufferLength = 0;
 }
