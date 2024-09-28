@@ -112,6 +112,10 @@ public class Falcon500 implements Motor {
     return m_Falcon500.getSupplyCurrent().refresh().getValue();
   }
 
+  public void resetPosition(double value) {
+    m_Falcon500.setPosition(value);
+  }
+
   public void setPIDs(PIDConstants constants, int slot) {
     SlotConfigs config = new SlotConfigs();
     config.SlotNumber = slot;

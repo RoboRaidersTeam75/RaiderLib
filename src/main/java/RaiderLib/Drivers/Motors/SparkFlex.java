@@ -78,6 +78,10 @@ public class SparkFlex implements Motor {
     return m_SparkFlex.getOutputCurrent();
   }
 
+  public void resetPosition(double value) {
+    m_SparkFlex.getEncoder().setPosition(value);
+  }
+
   public void setPIDs(PIDConstants constants, int slot) {
     m_Controller.setP(constants.kP, slot);
     m_Controller.setI(constants.kI, slot);

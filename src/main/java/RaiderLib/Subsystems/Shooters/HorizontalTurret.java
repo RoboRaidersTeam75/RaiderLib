@@ -10,6 +10,7 @@ import RaiderLib.Drivers.Motors.Motor;
 import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
 import RaiderLib.Logging.Logger;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class HorizontalTurret extends SubsystemBase {
@@ -59,12 +60,27 @@ public class HorizontalTurret extends SubsystemBase {
     m_limitType = limitType;
   }
 
-  public void setAngle(double angle) { 
-
+  public void setAngle(double degrees, double speed) { 
+    double threshold = 0.01;
+    if (degrees / 360 > m_angler.getPosition()) {
+      speed = -speed;
+    }
+    while (!MathUtil.isNear(degrees / 360, m_angler.getPosition(), threshold)) {
+      if (m_limitType == LimitType.HARD && (m_leftLimit.get() || m_rightLimit.get())) {
+        break;
+      }
+      // if (m_limitType == LimitType.SEMISOFT && m_leftLimit.get())
+      setSpeed(speed);
+    }
+    setSpeed(0);
   }
 
   public void setSpeed(double speed) { // percent
+    m_angler.setRPM(speed);
+  }
 
+  public void resetAngle() {
+    m_angler.resetPosition(0);
   }
 
   @Override
