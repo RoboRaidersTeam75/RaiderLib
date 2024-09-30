@@ -83,6 +83,9 @@ public class SwerveModule {
             m_driveMotor.getRPM(), m_constants.wheelCircumference, m_constants.driveGearRatio),
         getAngle());
   }
+  public SwerveModuleState getSetpoint(){
+    return setpoint;
+  }
 
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
