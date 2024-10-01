@@ -197,7 +197,7 @@ public class Falcon500 implements Motor {
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
     falconConfig.MotorOutput.NeutralMode =
-        config.generalConfigs.brakeModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+        config.generalConfigs.neutralMode == NeutralMode.BRAKE ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     falconConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
         config.softLimits.forwardSoftLimitRotations;

@@ -2,6 +2,7 @@ package RaiderLib.Subsystems.Drivetrains;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.SwerveConstants;
+import RaiderLib.Dashboard.TuningTab;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -12,6 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
@@ -26,16 +28,14 @@ public class SwerveDrive extends SubsystemBase {
       MotorType type,
       MotorConfiguration driveConfig,
       MotorConfiguration angleConfig,
-      int[] driveMotorCanIds,
-      int[] angleMotorCanIds,
-      int[] cancoderCanIds,
       IMU imu) {
 
     SwerveModule[] modules = new SwerveModule[4];
     for (int i = 0; i < 4; i++) {
-      driveConfig.setCANID(driveMotorCanIds[i]);
-      angleConfig.setCANID(angleMotorCanIds[i]);
-      modules[i] = new SwerveModule(i, constants, type, driveConfig, angleConfig, cancoderCanIds[i]);
+      driveConfig.setCANID(constants.driveMotorCanIds[i]);
+      angleConfig.setCANID(constants.angleMotorCanIds[i]);
+      driveConfig.setMotorInvert(constants.inverts[i]);
+      modules[i] = new SwerveModule(i, constants, type, driveConfig, angleConfig);
     }
 
     m_imu = imu;
@@ -81,5 +81,8 @@ public class SwerveDrive extends SubsystemBase {
 
   public void periodic() {
     swerveOdometry.update(m_imu.getRotation2d(), getModulePositions());
+    for (SwerveModule mod : m_modules) {
+      SmartDashboard.putNumber("Mod " + mod.m_moduleNumber + " CANcoder", mod.getCANCoder().getDegrees());
+    }
   }
 }

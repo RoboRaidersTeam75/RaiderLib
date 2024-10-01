@@ -70,7 +70,7 @@ public class TuningTab {
         });
   }
 
-  static void tuneMotorPIDs(Motor motor, String title) {
+  public static void tuneMotorPIDs(Motor motor, String title) {
     tunePIDs(title + " slot0", motor.getConfiguration().PIDConfigs.slot0Configs);
     tunePIDs(title + " slot1", motor.getConfiguration().PIDConfigs.slot1Configs);
     tunePIDs(title + " slot2", motor.getConfiguration().PIDConfigs.slot2Configs);

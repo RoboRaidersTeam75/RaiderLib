@@ -197,7 +197,7 @@ public class KrakenX60 implements Motor {
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
     krakenConfig.MotorOutput.NeutralMode =
-        config.generalConfigs.brakeModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+        config.generalConfigs.neutralMode == NeutralMode.BRAKE ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     krakenConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
         config.softLimits.forwardSoftLimitRotations;

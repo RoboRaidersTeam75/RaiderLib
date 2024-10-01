@@ -1,6 +1,7 @@
 package RaiderLib.Config;
 
 import RaiderLib.Drivers.Motors.Motor;
+import RaiderLib.Drivers.Motors.Motor.NeutralMode;
 
 /*
  * current limits
@@ -38,7 +39,7 @@ public class MotorConfiguration {
 
   public class GeneralConfigs {
     public boolean motorInvert = false;
-    public boolean brakeModeEnabled = false;
+    public NeutralMode neutralMode = NeutralMode.BRAKE;
     public double sensorToMechanismRatio = (1.0 / 1.0); // conversion factor
   }
 
@@ -126,8 +127,8 @@ public class MotorConfiguration {
     return this;
   }
 
-  public MotorConfiguration setBrakeModeEnabled(boolean brakeModeEnabled) {
-    this.generalConfigs.brakeModeEnabled = brakeModeEnabled;
+  public MotorConfiguration setNeutralMode(NeutralMode neutralMode) {
+    this.generalConfigs.neutralMode = neutralMode;
     return this;
   }
 

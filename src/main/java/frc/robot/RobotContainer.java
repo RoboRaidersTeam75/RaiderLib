@@ -6,13 +6,12 @@ import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.IMUs.NavX;
 import RaiderLib.Drivers.IMUs.Pigeon2;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
+import RaiderLib.Drivers.Motors.Motor.NeutralMode;
 import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
-import RaiderLib.Subsystems.Drivetrains.TankDrive;
 import RaiderLib.Config.SwerveConstants;
 import RaiderLib.Logging.Logger;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -36,11 +35,11 @@ public class RobotContainer {
 
   private final CommandXboxController m_XboxController = new CommandXboxController(2);
 
-  private final IMU m_Imu = new Pigeon2(18, "75Drive");
+  private final IMU m_Imu = new NavX();
 
-  double wheelBase = Units.inchesToMeters(22.5);
-  double trackWidth = Units.inchesToMeters(22.5);
-  double wheelCircumference = 0;
+  double wheelBase = 0.603;
+  double trackWidth = 0.603;
+  double wheelCircumference = 0.309;
 
   private final SwerveConstants swerveConstants = new SwerveConstants()
     .setKinematics(new SwerveDriveKinematics(
@@ -54,8 +53,12 @@ public class RobotContainer {
     .setWheelCircumference(wheelCircumference)
     .setDriveGearRatio(6.75 / 1.0)
     .setAngleGearRatio(12.8 / 1.0)
-    .setMaxSpeed(6)
-    .setAngleOffsets(new double[]{45, 0, 0, 0});
+    .setMaxSpeed(4.5)
+    .setAngleOffsets(new double[]{52.47, 226.9, 29.355, 74.05})
+    .setCANIDs(new int[]{14, 11, 13, 12},
+              new int[]{24, 21, 23, 22},
+              new int[]{34, 31, 33, 32})
+    .setInverts(new boolean[]{true, false, true, false});
 
   private MotorConfiguration angleTemplate = new MotorConfiguration()
     .setSupplyCurrentLimit(40)
@@ -63,8 +66,9 @@ public class RobotContainer {
     .setSupplyCurrentThresholdSeconds(.1)
     .setOpenLoopRampRateSeconds(.25)
     .setClosedLoopRampRateSeconds(0)
-    .setCanbus("75Drive") // Neutral modes??? Angle offsets??
-    .setPID(new PIDConstants(4.8, 0, 0));
+    // .setCanbus("75Drive") // Neutral modes??? Angle offsets??
+    .setPID(new PIDConstants(0.015, 0, 0))
+    .setNeutralMode(NeutralMode.BRAKE);
 
   private MotorConfiguration driveTemplate = new MotorConfiguration()
     .setSupplyCurrentLimit(40)
@@ -72,16 +76,15 @@ public class RobotContainer {
     .setSupplyCurrentThresholdSeconds(.1)
     .setOpenLoopRampRateSeconds(.25)
     .setClosedLoopRampRateSeconds(0)
-    .setCanbus("75Drive")
-    .setPID(new PIDConstants(.05, 0, 0));
+    // .setCanbus("75Drive")
+    .setPID(new PIDConstants(0.1, 0, 0))
+    .setNeutralMode(NeutralMode.BRAKE);
 
   
 
-  private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.KRAKENX60, driveTemplate, angleTemplate, 
-        new int[]{14, 11, 13, 12},
-        new int[]{24, 21, 23, 22},
-        new int[]{34, 31, 33, 32},
+  private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.CANSPARKMAX, driveTemplate, angleTemplate,
         m_Imu);
+      
   /* Driver Buttons */
 
   /*Auto Chooser Config */

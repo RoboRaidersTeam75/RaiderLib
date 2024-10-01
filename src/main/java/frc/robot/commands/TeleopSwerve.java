@@ -20,7 +20,6 @@ public class TeleopSwerve extends Command {
   private DoubleSupplier strafeSup;
   private DoubleSupplier rotationSup;
   private boolean isOpenLoop;
-  private boolean robotRelative;
 
   private final double translationStickMapValue = 1.5;
   private final double rotationStickMapValue = 1.25;
@@ -39,7 +38,6 @@ public class TeleopSwerve extends Command {
     this.strafeSup = strafeSup;
     this.rotationSup = rotationSup;
     this.isOpenLoop = isOpenLoop;
-    this.robotRelative = robotRelative;
 
     addRequirements(m_Swerve);
   }
@@ -65,10 +63,10 @@ public class TeleopSwerve extends Command {
      * Multiply it by max speed as the drive command has units of meters per second
      */
     Translation2d translation2d =
-        new Translation2d(translationVal, strafeVal).times(6);
+        new Translation2d(translationVal, strafeVal).times(4.5);
 
-    double wheelBase = Units.inchesToMeters(22.5);
-    double trackWidth = Units.inchesToMeters(22.5);
+    double wheelBase = 0.603;
+    double trackWidth = 0.603;
 
     // drive the robot. Multiple the rotation value by 0.5 to make the rotation easier to handle
     m_Swerve.drive(
