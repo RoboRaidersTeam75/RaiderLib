@@ -43,7 +43,7 @@ public class Falcon500 implements Motor {
       m_Falcon500 = new TalonFX(config.CANID);
     }
     m_Config = config;
-    configMotor(config);
+    configMotor();
     m_Falcon500.setPosition(0);
     isLicensed = m_Falcon500.getIsProLicensed().waitForUpdate(5).getValue();
   }
@@ -174,53 +174,53 @@ public class Falcon500 implements Motor {
     m_follower = follower;
   }
 
-  private void configMotor(MotorConfiguration config) {
+  public void configMotor() {
     TalonFXConfiguration falconConfig = new TalonFXConfiguration();
 
     falconConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod =
-        config.rampRates.closedLoopRampRateSeconds;
+        this.m_Config.rampRates.closedLoopRampRateSeconds;
     falconConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod =
-        config.rampRates.openLoopRampRateSeconds;
+        this.m_Config.rampRates.openLoopRampRateSeconds;
 
-    falconConfig.CurrentLimits.StatorCurrentLimit = config.currentConfigs.StatorCurrentLimit;
-    falconConfig.CurrentLimits.SupplyCurrentLimit = config.currentConfigs.SupplyCurrentLimit;
+    falconConfig.CurrentLimits.StatorCurrentLimit = this.m_Config.currentConfigs.StatorCurrentLimit;
+    falconConfig.CurrentLimits.SupplyCurrentLimit = this.m_Config.currentConfigs.SupplyCurrentLimit;
     falconConfig.CurrentLimits.SupplyCurrentThreshold =
-        config.currentConfigs.SupplyCurrentThresholdAmps;
+        this.m_Config.currentConfigs.SupplyCurrentThresholdAmps;
     falconConfig.CurrentLimits.SupplyTimeThreshold =
-        config.currentConfigs.SupplyCurrentThresholdSeconds;
+        this.m_Config.currentConfigs.SupplyCurrentThresholdSeconds;
     falconConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     falconConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-    falconConfig.Feedback.SensorToMechanismRatio = config.generalConfigs.sensorToMechanismRatio;
+    falconConfig.Feedback.SensorToMechanismRatio = this.m_Config.generalConfigs.sensorToMechanismRatio;
     falconConfig.MotorOutput.Inverted =
-        config.generalConfigs.motorInvert
+        this.m_Config.generalConfigs.motorInvert
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
     falconConfig.MotorOutput.NeutralMode =
-        config.generalConfigs.brakeModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+        this.m_Config.generalConfigs.brakeModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     falconConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
-        config.softLimits.forwardSoftLimitRotations;
+        this.m_Config.softLimits.forwardSoftLimitRotations;
     falconConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
-        config.softLimits.forwardSoftLimitRotations;
+        this.m_Config.softLimits.forwardSoftLimitRotations;
     falconConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable =
-        config.softLimits.enableForwardSoftLimit;
+        this.m_Config.softLimits.enableForwardSoftLimit;
     falconConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable =
-        config.softLimits.enableForwardSoftLimit;
+        this.m_Config.softLimits.enableForwardSoftLimit;
 
-    falconConfig.Slot0.kP = config.PIDConfigs.slot0Configs.kP;
-    falconConfig.Slot0.kI = config.PIDConfigs.slot0Configs.kI;
-    falconConfig.Slot0.kD = config.PIDConfigs.slot0Configs.kD;
-    falconConfig.Slot0.kS = config.PIDConfigs.slot0Configs.kF;
+    falconConfig.Slot0.kP = this.m_Config.PIDConfigs.slot0Configs.kP;
+    falconConfig.Slot0.kI = this.m_Config.PIDConfigs.slot0Configs.kI;
+    falconConfig.Slot0.kD = this.m_Config.PIDConfigs.slot0Configs.kD;
+    falconConfig.Slot0.kS = this.m_Config.PIDConfigs.slot0Configs.kF;
 
-    falconConfig.Slot1.kP = config.PIDConfigs.slot1Configs.kP;
-    falconConfig.Slot1.kI = config.PIDConfigs.slot1Configs.kI;
-    falconConfig.Slot1.kD = config.PIDConfigs.slot1Configs.kD;
-    falconConfig.Slot1.kS = config.PIDConfigs.slot1Configs.kF;
+    falconConfig.Slot1.kP = this.m_Config.PIDConfigs.slot1Configs.kP;
+    falconConfig.Slot1.kI = this.m_Config.PIDConfigs.slot1Configs.kI;
+    falconConfig.Slot1.kD = this.m_Config.PIDConfigs.slot1Configs.kD;
+    falconConfig.Slot1.kS = this.m_Config.PIDConfigs.slot1Configs.kF;
 
-    falconConfig.Slot2.kP = config.PIDConfigs.slot2Configs.kP;
-    falconConfig.Slot2.kI = config.PIDConfigs.slot2Configs.kI;
-    falconConfig.Slot2.kD = config.PIDConfigs.slot2Configs.kD;
-    falconConfig.Slot2.kS = config.PIDConfigs.slot2Configs.kF;
+    falconConfig.Slot2.kP = this.m_Config.PIDConfigs.slot2Configs.kP;
+    falconConfig.Slot2.kI = this.m_Config.PIDConfigs.slot2Configs.kI;
+    falconConfig.Slot2.kD = this.m_Config.PIDConfigs.slot2Configs.kD;
+    falconConfig.Slot2.kS = this.m_Config.PIDConfigs.slot2Configs.kF;
   }
 }

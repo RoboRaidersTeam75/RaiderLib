@@ -27,7 +27,7 @@ public class SparkFlex implements Motor {
     m_Controller = m_SparkFlex.getPIDController();
     m_Encoder = m_SparkFlex.getEncoder();
     m_Config = config;
-    configMotor(config);
+    configMotor();
   }
 
   public MotorConfiguration getConfiguration() {
@@ -113,37 +113,37 @@ public class SparkFlex implements Motor {
     m_follower = follower;
   }
 
-  private void configMotor(MotorConfiguration config) {
+  public void configMotor() {
     m_SparkFlex.setIdleMode(
-        config.generalConfigs.brakeModeEnabled ? IdleMode.kBrake : IdleMode.kCoast);
-    m_SparkFlex.setInverted(config.generalConfigs.motorInvert);
+      this.m_Config.generalConfigs.brakeModeEnabled ? IdleMode.kBrake : IdleMode.kCoast);
+    m_SparkFlex.setInverted(this.m_Config.generalConfigs.motorInvert);
 
-    m_SparkFlex.setOpenLoopRampRate(config.rampRates.openLoopRampRateSeconds);
-    m_SparkFlex.setClosedLoopRampRate(config.rampRates.closedLoopRampRateSeconds);
-    m_SparkFlex.setSmartCurrentLimit(config.currentConfigs.StatorCurrentLimit);
-    m_SparkFlex.setSecondaryCurrentLimit(config.currentConfigs.SupplyCurrentLimit);
+    m_SparkFlex.setOpenLoopRampRate(this.m_Config.rampRates.openLoopRampRateSeconds);
+    m_SparkFlex.setClosedLoopRampRate(this.m_Config.rampRates.closedLoopRampRateSeconds);
+    m_SparkFlex.setSmartCurrentLimit(this.m_Config.currentConfigs.StatorCurrentLimit);
+    m_SparkFlex.setSecondaryCurrentLimit(this.m_Config.currentConfigs.SupplyCurrentLimit);
     m_SparkFlex.setSoftLimit(
-        SoftLimitDirection.kForward, (float) config.softLimits.forwardSoftLimitRotations);
+        SoftLimitDirection.kForward, (float) this.m_Config.softLimits.forwardSoftLimitRotations);
     m_SparkFlex.setSoftLimit(
-        SoftLimitDirection.kReverse, (float) config.softLimits.reverseSoftLimitRotations);
+        SoftLimitDirection.kReverse, (float) this.m_Config.softLimits.reverseSoftLimitRotations);
 
     m_Encoder.setPosition(0);
-    m_Encoder.setPositionConversionFactor(config.generalConfigs.sensorToMechanismRatio);
-    m_Encoder.setVelocityConversionFactor(config.generalConfigs.sensorToMechanismRatio);
+    m_Encoder.setPositionConversionFactor(this.m_Config.generalConfigs.sensorToMechanismRatio);
+    m_Encoder.setVelocityConversionFactor(this.m_Config.generalConfigs.sensorToMechanismRatio);
 
-    m_Controller.setP(config.PIDConfigs.slot0Configs.kP, 0);
-    m_Controller.setI(config.PIDConfigs.slot0Configs.kI, 0);
-    m_Controller.setD(config.PIDConfigs.slot0Configs.kD, 0);
-    m_Controller.setFF(config.PIDConfigs.slot0Configs.kF, 0);
+    m_Controller.setP(this.m_Config.PIDConfigs.slot0Configs.kP, 0);
+    m_Controller.setI(this.m_Config.PIDConfigs.slot0Configs.kI, 0);
+    m_Controller.setD(this.m_Config.PIDConfigs.slot0Configs.kD, 0);
+    m_Controller.setFF(this.m_Config.PIDConfigs.slot0Configs.kF, 0);
 
-    m_Controller.setP(config.PIDConfigs.slot1Configs.kP, 1);
-    m_Controller.setI(config.PIDConfigs.slot1Configs.kI, 1);
-    m_Controller.setD(config.PIDConfigs.slot1Configs.kD, 1);
-    m_Controller.setFF(config.PIDConfigs.slot1Configs.kF, 1);
+    m_Controller.setP(this.m_Config.PIDConfigs.slot1Configs.kP, 1);
+    m_Controller.setI(this.m_Config.PIDConfigs.slot1Configs.kI, 1);
+    m_Controller.setD(this.m_Config.PIDConfigs.slot1Configs.kD, 1);
+    m_Controller.setFF(this.m_Config.PIDConfigs.slot1Configs.kF, 1);
 
-    m_Controller.setP(config.PIDConfigs.slot2Configs.kP, 2);
-    m_Controller.setI(config.PIDConfigs.slot2Configs.kI, 2);
-    m_Controller.setD(config.PIDConfigs.slot2Configs.kD, 2);
-    m_Controller.setFF(config.PIDConfigs.slot2Configs.kF, 2);
+    m_Controller.setP(this.m_Config.PIDConfigs.slot2Configs.kP, 2);
+    m_Controller.setI(this.m_Config.PIDConfigs.slot2Configs.kI, 2);
+    m_Controller.setD(this.m_Config.PIDConfigs.slot2Configs.kD, 2);
+    m_Controller.setFF(this.m_Config.PIDConfigs.slot2Configs.kF, 2);
   }
 }

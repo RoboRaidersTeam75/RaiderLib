@@ -43,7 +43,7 @@ public class KrakenX60 implements Motor {
       m_KrakenX60 = new TalonFX(config.CANID);
     }
     m_Config = config;
-    configMotor(config);
+    configMotor();
     m_KrakenX60.setPosition(0);
     isLicensed = m_KrakenX60.getIsProLicensed().waitForUpdate(5).getValue();
   }
@@ -174,53 +174,53 @@ public class KrakenX60 implements Motor {
     m_follower = follower;
   }
 
-  private void configMotor(MotorConfiguration config) {
+  public void configMotor() {
     TalonFXConfiguration krakenConfig = new TalonFXConfiguration();
 
     krakenConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod =
-        config.rampRates.closedLoopRampRateSeconds;
+    this.m_Config.rampRates.closedLoopRampRateSeconds;
     krakenConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod =
-        config.rampRates.openLoopRampRateSeconds;
+    this.m_Config.rampRates.openLoopRampRateSeconds;
 
-    krakenConfig.CurrentLimits.StatorCurrentLimit = config.currentConfigs.StatorCurrentLimit;
-    krakenConfig.CurrentLimits.SupplyCurrentLimit = config.currentConfigs.SupplyCurrentLimit;
+    krakenConfig.CurrentLimits.StatorCurrentLimit = this.m_Config.currentConfigs.StatorCurrentLimit;
+    krakenConfig.CurrentLimits.SupplyCurrentLimit = this.m_Config.currentConfigs.SupplyCurrentLimit;
     krakenConfig.CurrentLimits.SupplyCurrentThreshold =
-        config.currentConfigs.SupplyCurrentThresholdAmps;
+    this.m_Config.currentConfigs.SupplyCurrentThresholdAmps;
     krakenConfig.CurrentLimits.SupplyTimeThreshold =
-        config.currentConfigs.SupplyCurrentThresholdSeconds;
+    this.m_Config.currentConfigs.SupplyCurrentThresholdSeconds;
     krakenConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     krakenConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-    krakenConfig.Feedback.SensorToMechanismRatio = config.generalConfigs.sensorToMechanismRatio;
+    krakenConfig.Feedback.SensorToMechanismRatio = this.m_Config.generalConfigs.sensorToMechanismRatio;
     krakenConfig.MotorOutput.Inverted =
-        config.generalConfigs.motorInvert
+    this.m_Config.generalConfigs.motorInvert
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
     krakenConfig.MotorOutput.NeutralMode =
-        config.generalConfigs.brakeModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+    this.m_Config.generalConfigs.brakeModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     krakenConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
-        config.softLimits.forwardSoftLimitRotations;
+    this.m_Config.softLimits.forwardSoftLimitRotations;
     krakenConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
-        config.softLimits.forwardSoftLimitRotations;
+    this.m_Config.softLimits.forwardSoftLimitRotations;
     krakenConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable =
-        config.softLimits.enableForwardSoftLimit;
+    this.m_Config.softLimits.enableForwardSoftLimit;
     krakenConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable =
-        config.softLimits.enableForwardSoftLimit;
+    this.m_Config.softLimits.enableForwardSoftLimit;
 
-    krakenConfig.Slot0.kP = config.PIDConfigs.slot0Configs.kP;
-    krakenConfig.Slot0.kI = config.PIDConfigs.slot0Configs.kI;
-    krakenConfig.Slot0.kD = config.PIDConfigs.slot0Configs.kD;
-    krakenConfig.Slot0.kS = config.PIDConfigs.slot0Configs.kF;
+    krakenConfig.Slot0.kP = this.m_Config.PIDConfigs.slot0Configs.kP;
+    krakenConfig.Slot0.kI = this.m_Config.PIDConfigs.slot0Configs.kI;
+    krakenConfig.Slot0.kD = this.m_Config.PIDConfigs.slot0Configs.kD;
+    krakenConfig.Slot0.kS = this.m_Config.PIDConfigs.slot0Configs.kF;
 
-    krakenConfig.Slot1.kP = config.PIDConfigs.slot1Configs.kP;
-    krakenConfig.Slot1.kI = config.PIDConfigs.slot1Configs.kI;
-    krakenConfig.Slot1.kD = config.PIDConfigs.slot1Configs.kD;
-    krakenConfig.Slot1.kS = config.PIDConfigs.slot1Configs.kF;
+    krakenConfig.Slot1.kP = this.m_Config.PIDConfigs.slot1Configs.kP;
+    krakenConfig.Slot1.kI = this.m_Config.PIDConfigs.slot1Configs.kI;
+    krakenConfig.Slot1.kD = this.m_Config.PIDConfigs.slot1Configs.kD;
+    krakenConfig.Slot1.kS = this.m_Config.PIDConfigs.slot1Configs.kF;
 
-    krakenConfig.Slot2.kP = config.PIDConfigs.slot2Configs.kP;
-    krakenConfig.Slot2.kI = config.PIDConfigs.slot2Configs.kI;
-    krakenConfig.Slot2.kD = config.PIDConfigs.slot2Configs.kD;
-    krakenConfig.Slot2.kS = config.PIDConfigs.slot2Configs.kF;
+    krakenConfig.Slot2.kP = this.m_Config.PIDConfigs.slot2Configs.kP;
+    krakenConfig.Slot2.kI = this.m_Config.PIDConfigs.slot2Configs.kI;
+    krakenConfig.Slot2.kD = this.m_Config.PIDConfigs.slot2Configs.kD;
+    krakenConfig.Slot2.kS = this.m_Config.PIDConfigs.slot2Configs.kF;
   }
 }

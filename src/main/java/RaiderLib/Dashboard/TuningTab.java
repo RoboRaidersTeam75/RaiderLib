@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import java.util.EnumSet;
+import java.util.function.Supplier;
 
 public class TuningTab {
   static int col = 0;
@@ -18,7 +19,7 @@ public class TuningTab {
     NetworkTable table = nt.getTable("Shuffleboard").getSubTable("Tuning");
   }
 
-  public static void tunePIDs(String title, PIDConstants constants) {
+  public static void tunePIDs(String title, PIDConstants constants, Supplier<Void> apply) {
     ShuffleboardTab tuningTab = Shuffleboard.getTab("Tuning");
 
     tuningTab.add(title + " P", constants.kP).withSize(2, 1).withPosition(col, 0);
@@ -38,6 +39,7 @@ public class TuningTab {
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         event -> {
           constants.kP = event.valueData.value.getDouble();
+          apply.get();
         });
 
     DoubleSubscriber isub = ntTable.getDoubleTopic(title + " I").subscribe(0.0);
@@ -49,6 +51,7 @@ public class TuningTab {
           // can only get doubles because it's a DoubleSubscriber, but
           // could check value.isDouble() here too
           constants.kI = event.valueData.value.getDouble();
+          apply.get();
         });
 
     DoubleSubscriber dsub = ntTable.getDoubleTopic(title + " D").subscribe(0.0);
@@ -58,6 +61,7 @@ public class TuningTab {
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         event -> {
           constants.kD = event.valueData.value.getDouble();
+          apply.get();
         });
 
     DoubleSubscriber fsub = ntTable.getDoubleTopic(title + " F").subscribe(0.0);
@@ -67,12 +71,22 @@ public class TuningTab {
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         event -> {
           constants.kF = event.valueData.value.getDouble();
+          apply.get();
         });
   }
 
   static void tuneMotorPIDs(Motor motor, String title) {
-    tunePIDs(title + " slot0", motor.getConfiguration().PIDConfigs.slot0Configs);
-    tunePIDs(title + " slot1", motor.getConfiguration().PIDConfigs.slot1Configs);
-    tunePIDs(title + " slot2", motor.getConfiguration().PIDConfigs.slot2Configs);
+    tunePIDs(title + " slot0", motor.getConfiguration().PIDConfigs.slot0Configs, () -> {
+      motor.configMotor();
+      return null;
+    });
+    tunePIDs(title + " slot1", motor.getConfiguration().PIDConfigs.slot1Configs, () -> {
+      motor.configMotor();
+      return null;
+    });
+    tunePIDs(title + " slot2", motor.getConfiguration().PIDConfigs.slot2Configs, () -> {
+      motor.configMotor();
+      return null;
+    });
   }
 }

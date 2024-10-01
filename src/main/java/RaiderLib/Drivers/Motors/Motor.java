@@ -121,4 +121,6 @@ public interface Motor {
   public MotorType getType();
 
   public void setFollower(Motor follower);
+
+  public void configMotor();
 }
