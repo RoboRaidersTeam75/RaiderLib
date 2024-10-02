@@ -13,6 +13,7 @@ import RaiderLib.Util.ModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule {
   public int m_moduleNumber;
@@ -103,7 +104,7 @@ public class SwerveModule {
   }
 
   public void resetToAbsolute() {
-    double absolutePosition = (getCANCoder().getDegrees() - m_constants.angleOffsets[m_moduleNumber]) / 360.0;
+    double absolutePosition = (getCANCoder().getRotations() - m_constants.angleOffsets[m_moduleNumber] / 360.0);
     m_angleMotor.resetPosition(absolutePosition);
   }
 

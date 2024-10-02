@@ -70,6 +70,6 @@ public class TeleopSwerve extends Command {
 
     // drive the robot. Multiple the rotation value by 0.5 to make the rotation easier to handle
     m_Swerve.drive(
-        translation2d, rotationVal * 6 / Math.hypot(trackWidth / 2.0, wheelBase / 2.0), isOpenLoop);
+        translation2d, rotationVal * 4.5 / Math.hypot(trackWidth / 2.0, wheelBase / 2.0), isOpenLoop);
   }
 }

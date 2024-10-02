@@ -67,7 +67,7 @@ public class RobotContainer {
     .setOpenLoopRampRateSeconds(.25)
     .setClosedLoopRampRateSeconds(0)
     // .setCanbus("75Drive") // Neutral modes??? Angle offsets??
-    .setPID(new PIDConstants(0.015, 0, 0))
+    .setPID(new PIDConstants(0.05, 0, 0))
     .setNeutralMode(NeutralMode.BRAKE);
 
   private MotorConfiguration driveTemplate = new MotorConfiguration()
