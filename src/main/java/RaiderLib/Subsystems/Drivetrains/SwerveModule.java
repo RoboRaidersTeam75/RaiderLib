@@ -4,6 +4,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.SwerveConstants;
+import RaiderLib.Dashboard.TuningTab;
 import RaiderLib.Drivers.Motors.Motor;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
 import RaiderLib.Drivers.Motors.MotorFactory;
@@ -12,6 +13,7 @@ import RaiderLib.Util.ModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule {
   public int m_moduleNumber;
@@ -26,17 +28,31 @@ public class SwerveModule {
 
   private SwerveConstants m_constants;
 
+    public SwerveModule(
+      int moduleNumber,
+      SwerveConstants constants,
+      MotorType type,
+      MotorConfiguration driveConfig,
+      MotorConfiguration angleConfig
+      ) {
+        this(moduleNumber, constants, type, driveConfig, angleConfig, "");
+      }
+
   public SwerveModule(
       int moduleNumber,
       SwerveConstants constants,
       MotorType type,
       MotorConfiguration driveConfig,
       MotorConfiguration angleConfig,
-      int cancoderId) {
+      String canBus) {
     m_moduleNumber = moduleNumber;
     m_driveMotor = MotorFactory.createMotor(type, driveConfig);
     m_angleMotor = MotorFactory.createMotor(type, angleConfig);
-    m_angleEncoder = new CANcoder(cancoderId, "75Drive");
+    if (canBus.length() == 0) {
+      m_angleEncoder = new CANcoder(constants.cancoderCanIds[moduleNumber]);
+    } else {
+      m_angleEncoder = new CANcoder(constants.cancoderCanIds[moduleNumber], canBus);
+    }
     setpoint = new SwerveModuleState();
     m_constants = constants;
     lastAngle = waitForCANcoder();
@@ -70,8 +86,7 @@ public class SwerveModule {
             ? lastAngle
             : desiredState.angle; // Prevent rotating module if speed is less then 1%. Prevents Jittering.
 
-    m_angleMotor.setPosition(
-        Conversions.degreesToRotations(angle.getDegrees(), m_constants.angleGearRatio));
+    m_angleMotor.setPosition(angle.getRotations() * m_constants.angleGearRatio);
     lastAngle = angle;
   }
 
@@ -89,9 +104,8 @@ public class SwerveModule {
   }
 
   public void resetToAbsolute() {
-    double absolutePosition = (waitForCANcoder().getDegrees() - m_constants.angleOffsets[m_moduleNumber])
-        * m_constants.angleOffsets[m_moduleNumber] / 360.0;
-    m_angleMotor.setPosition(absolutePosition);
+    double absolutePosition = (getCANCoder().getRotations() - m_constants.angleOffsets[m_moduleNumber] / 360.0);
+    m_angleMotor.resetPosition(absolutePosition);
   }
 
 

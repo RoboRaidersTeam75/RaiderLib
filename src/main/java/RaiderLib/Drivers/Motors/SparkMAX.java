@@ -78,7 +78,7 @@ public class SparkMAX implements Motor {
   }
 
   public void resetPosition(double value) {
-    m_SparkMAX.getEncoder().setPosition(value);
+    m_Encoder.setPosition(value);
   }
 
   public void setPIDs(PIDConstants constants, int slot) {
@@ -114,7 +114,7 @@ public class SparkMAX implements Motor {
 
   public void configMotor() {
     m_SparkMAX.setIdleMode(
-        this.m_Config.generalConfigs.brakeModeEnabled ? IdleMode.kBrake : IdleMode.kCoast);
+        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE ? IdleMode.kBrake : IdleMode.kCoast);
     m_SparkMAX.setInverted(this.m_Config.generalConfigs.motorInvert);
 
     m_SparkMAX.setOpenLoopRampRate(this.m_Config.rampRates.openLoopRampRateSeconds);

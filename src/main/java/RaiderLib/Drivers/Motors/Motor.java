@@ -12,6 +12,11 @@ public interface Motor {
     CANSPARKFLEX
   }
 
+  public enum NeutralMode {
+    BRAKE,
+    COAST
+  }
+
   /** gets motor configuration */
   public MotorConfiguration getConfiguration();
 
@@ -72,7 +77,7 @@ public interface Motor {
   public double getCurrent();
 
   /**
-   * gets the current the motor is using from the supply side
+   * resets the encoder to a value
    *
    * @param value - position (in rotations) to reset the encoder to
    */
