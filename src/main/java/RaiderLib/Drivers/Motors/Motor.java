@@ -81,7 +81,6 @@ public interface Motor {
    *
    * @param value - position (in rotations) to reset the encoder to
    */
-
   public void resetPosition(double value);
 
   /**

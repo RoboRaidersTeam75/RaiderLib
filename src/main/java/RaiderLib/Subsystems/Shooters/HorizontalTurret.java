@@ -7,8 +7,8 @@ package RaiderLib.Subsystems.Shooters;
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Drivers.DigitalInputs.LimitSwitch;
 import RaiderLib.Drivers.Motors.Motor;
-import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
+import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Logging.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,15 +26,12 @@ public class HorizontalTurret extends SubsystemBase {
   private LimitType m_limitType;
 
   public HorizontalTurret(
-    MotorType motorType,
-    MotorConfiguration motorConfig,
-    LimitType limitType,
-    LimitSwitch limit
-  ) {
+      MotorType motorType, MotorConfiguration motorConfig, LimitType limitType, LimitSwitch limit) {
     if (limitType == LimitType.HARD) {
       m_angler = null;
       Logger.log("Turret limit error", "Limit switches not provided");
-      System.out.println("TURRET LIMIT ERROR: must provide two limits switches when using hard limits");
+      System.out.println(
+          "TURRET LIMIT ERROR: must provide two limits switches when using hard limits");
       return;
     }
     m_angler = MotorFactory.createMotor(motorType, motorConfig);
@@ -43,12 +40,11 @@ public class HorizontalTurret extends SubsystemBase {
   }
 
   public HorizontalTurret(
-    MotorType motorType,
-    MotorConfiguration motorConfig,
-    LimitType limitType,
-    LimitSwitch limit1,
-    LimitSwitch limit2
-  ) {
+      MotorType motorType,
+      MotorConfiguration motorConfig,
+      LimitType limitType,
+      LimitSwitch limit1,
+      LimitSwitch limit2) {
     if (limitType == LimitType.SEMISOFT) {
       m_angler = null;
       Logger.log("Turret limit error", "Extra limit switch provided");
@@ -60,7 +56,7 @@ public class HorizontalTurret extends SubsystemBase {
     m_limitType = limitType;
   }
 
-  public void setAngle(double degrees, double speed) { 
+  public void setAngle(double degrees, double speed) {
     double threshold = 0.01;
     if (degrees / 360 > m_angler.getPosition()) {
       speed = -speed;

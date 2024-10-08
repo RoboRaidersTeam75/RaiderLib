@@ -4,7 +4,6 @@
 
 package RaiderLib.Drivers.Lights;
 
-import RaiderLib.Config.LightsConstants;
 import edu.wpi.first.wpilibj.util.Color;
 
 /** Add your docs here. */

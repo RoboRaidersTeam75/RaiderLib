@@ -76,17 +76,26 @@ public class TuningTab {
   }
 
   static void tuneMotorPIDs(Motor motor, String title) {
-    tunePIDs(title + " slot0", motor.getConfiguration().PIDConfigs.slot0Configs, () -> {
-      motor.configMotor();
-      return null;
-    });
-    tunePIDs(title + " slot1", motor.getConfiguration().PIDConfigs.slot1Configs, () -> {
-      motor.configMotor();
-      return null;
-    });
-    tunePIDs(title + " slot2", motor.getConfiguration().PIDConfigs.slot2Configs, () -> {
-      motor.configMotor();
-      return null;
-    });
+    tunePIDs(
+        title + " slot0",
+        motor.getConfiguration().PIDConfigs.slot0Configs,
+        () -> {
+          motor.configMotor();
+          return null;
+        });
+    tunePIDs(
+        title + " slot1",
+        motor.getConfiguration().PIDConfigs.slot1Configs,
+        () -> {
+          motor.configMotor();
+          return null;
+        });
+    tunePIDs(
+        title + " slot2",
+        motor.getConfiguration().PIDConfigs.slot2Configs,
+        () -> {
+          motor.configMotor();
+          return null;
+        });
   }
 }

@@ -178,35 +178,38 @@ public class KrakenX60 implements Motor {
     TalonFXConfiguration krakenConfig = new TalonFXConfiguration();
 
     krakenConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod =
-    this.m_Config.rampRates.closedLoopRampRateSeconds;
+        this.m_Config.rampRates.closedLoopRampRateSeconds;
     krakenConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod =
-    this.m_Config.rampRates.openLoopRampRateSeconds;
+        this.m_Config.rampRates.openLoopRampRateSeconds;
 
     krakenConfig.CurrentLimits.StatorCurrentLimit = this.m_Config.currentConfigs.StatorCurrentLimit;
     krakenConfig.CurrentLimits.SupplyCurrentLimit = this.m_Config.currentConfigs.SupplyCurrentLimit;
     krakenConfig.CurrentLimits.SupplyCurrentThreshold =
-    this.m_Config.currentConfigs.SupplyCurrentThresholdAmps;
+        this.m_Config.currentConfigs.SupplyCurrentThresholdAmps;
     krakenConfig.CurrentLimits.SupplyTimeThreshold =
-    this.m_Config.currentConfigs.SupplyCurrentThresholdSeconds;
+        this.m_Config.currentConfigs.SupplyCurrentThresholdSeconds;
     krakenConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     krakenConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-    krakenConfig.Feedback.SensorToMechanismRatio = this.m_Config.generalConfigs.sensorToMechanismRatio;
+    krakenConfig.Feedback.SensorToMechanismRatio =
+        this.m_Config.generalConfigs.sensorToMechanismRatio;
     krakenConfig.MotorOutput.Inverted =
-    this.m_Config.generalConfigs.motorInvert
+        this.m_Config.generalConfigs.motorInvert
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
     krakenConfig.MotorOutput.NeutralMode =
-        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE
+            ? NeutralModeValue.Brake
+            : NeutralModeValue.Coast;
 
     krakenConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
-    this.m_Config.softLimits.forwardSoftLimitRotations;
+        this.m_Config.softLimits.forwardSoftLimitRotations;
     krakenConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
-    this.m_Config.softLimits.forwardSoftLimitRotations;
+        this.m_Config.softLimits.forwardSoftLimitRotations;
     krakenConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable =
-    this.m_Config.softLimits.enableForwardSoftLimit;
+        this.m_Config.softLimits.enableForwardSoftLimit;
     krakenConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable =
-    this.m_Config.softLimits.enableForwardSoftLimit;
+        this.m_Config.softLimits.enableForwardSoftLimit;
 
     krakenConfig.Slot0.kP = this.m_Config.PIDConfigs.slot0Configs.kP;
     krakenConfig.Slot0.kI = this.m_Config.PIDConfigs.slot0Configs.kI;

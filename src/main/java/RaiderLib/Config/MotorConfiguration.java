@@ -1,6 +1,5 @@
 package RaiderLib.Config;
 
-import RaiderLib.Drivers.Motors.Motor;
 import RaiderLib.Drivers.Motors.Motor.NeutralMode;
 
 /*
@@ -101,7 +100,6 @@ public class MotorConfiguration {
     return this;
   }
 
-
   public MotorConfiguration setPID(PIDConstants constants) {
     this.PIDConfigs.slot0Configs = constants;
     return this;
@@ -186,8 +184,4 @@ public class MotorConfiguration {
     this.softLimits.reverseSoftLimitRotations = reverseSoftLimitRotations;
     return this;
   }
-
-
-
-
 }

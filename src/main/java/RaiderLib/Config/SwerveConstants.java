@@ -63,10 +63,9 @@ public class SwerveConstants {
     this.angleOffsets = offsets;
     return this;
   }
-  
-  public SwerveConstants setCANIDs(int[] driveMotorCanIds,
-  int[] angleMotorCanIds,
-  int[] cancoderCanIds) {
+
+  public SwerveConstants setCANIDs(
+      int[] driveMotorCanIds, int[] angleMotorCanIds, int[] cancoderCanIds) {
     this.driveMotorCanIds = driveMotorCanIds;
     this.angleMotorCanIds = angleMotorCanIds;
     this.cancoderCanIds = cancoderCanIds;

@@ -2,25 +2,25 @@ package frc.robot;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.PIDConstants;
+import RaiderLib.Config.SwerveConstants;
 import RaiderLib.Drivers.IMUs.IMU;
 import RaiderLib.Drivers.IMUs.NavX;
-import RaiderLib.Drivers.IMUs.Pigeon2;
+import RaiderLib.Drivers.Motors.Motor;
+import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
 import RaiderLib.Drivers.Motors.Motor.NeutralMode;
 import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
-import RaiderLib.Config.SwerveConstants;
-import RaiderLib.Logging.Logger;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.TeleopSwerve;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,50 +41,51 @@ public class RobotContainer {
   double trackWidth = 0.603;
   double wheelCircumference = 0.309;
 
-  private final SwerveConstants swerveConstants = new SwerveConstants()
-    .setKinematics(new SwerveDriveKinematics(
-      new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-      new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-      new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-      new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
-    ))
-    .setWheelBase(wheelBase)
-    .setTrackWidth(trackWidth)
-    .setWheelCircumference(wheelCircumference)
-    .setDriveGearRatio(6.75 / 1.0)
-    .setAngleGearRatio(12.8 / 1.0)
-    .setMaxSpeed(4.5)
-    .setAngleOffsets(new double[]{52.47, 226.9, 29.355, 74.05})
-    .setCANIDs(new int[]{14, 11, 13, 12},
-              new int[]{24, 21, 23, 22},
-              new int[]{34, 31, 33, 32})
-    .setInverts(new boolean[]{true, false, true, false});
+  private final SwerveConstants swerveConstants =
+      new SwerveConstants()
+          .setKinematics(
+              new SwerveDriveKinematics(
+                  new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+                  new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+                  new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+                  new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)))
+          .setWheelBase(wheelBase)
+          .setTrackWidth(trackWidth)
+          .setWheelCircumference(wheelCircumference)
+          .setDriveGearRatio(6.75 / 1.0)
+          .setAngleGearRatio(12.8 / 1.0)
+          .setMaxSpeed(4.5)
+          .setAngleOffsets(new double[] {52.47, 226.9, 29.355, 74.05})
+          .setCANIDs(
+              new int[] {14, 11, 13, 12}, new int[] {24, 21, 23, 22}, new int[] {34, 31, 33, 32})
+          .setInverts(new boolean[] {true, false, true, false});
 
-  private MotorConfiguration angleTemplate = new MotorConfiguration()
-    .setSupplyCurrentLimit(40)
-    .setSupplyCurrentThresholdAmps(40)
-    .setSupplyCurrentThresholdSeconds(.1)
-    .setOpenLoopRampRateSeconds(.25)
-    .setClosedLoopRampRateSeconds(0)
-    // .setCanbus("75Drive") // Neutral modes??? Angle offsets??
-    .setPID(new PIDConstants(0.05, 0, 0))
-    .setNeutralMode(NeutralMode.BRAKE);
+  private MotorConfiguration angleTemplate =
+      new MotorConfiguration()
+          .setSupplyCurrentLimit(40)
+          .setSupplyCurrentThresholdAmps(40)
+          .setSupplyCurrentThresholdSeconds(.1)
+          .setOpenLoopRampRateSeconds(.25)
+          .setClosedLoopRampRateSeconds(0)
+          // .setCanbus("75Drive") // Neutral modes??? Angle offsets??
+          .setPID(new PIDConstants(0.02, 0, 0))
+          .setNeutralMode(NeutralMode.BRAKE);
 
-  private MotorConfiguration driveTemplate = new MotorConfiguration()
-    .setSupplyCurrentLimit(40)
-    .setSupplyCurrentThresholdAmps(60)
-    .setSupplyCurrentThresholdSeconds(.1)
-    .setOpenLoopRampRateSeconds(.25)
-    .setClosedLoopRampRateSeconds(0)
-    // .setCanbus("75Drive")
-    .setPID(new PIDConstants(0.1, 0, 0))
-    .setNeutralMode(NeutralMode.BRAKE);
+  private MotorConfiguration driveTemplate =
+      new MotorConfiguration()
+          .setSupplyCurrentLimit(40)
+          .setSupplyCurrentThresholdAmps(60)
+          .setSupplyCurrentThresholdSeconds(.1)
+          .setOpenLoopRampRateSeconds(.25)
+          .setClosedLoopRampRateSeconds(0)
+          // .setCanbus("75Drive")
+          .setPID(new PIDConstants(0.1, 0, 0))
+          .setNeutralMode(NeutralMode.BRAKE);
 
-  
 
-  private final SwerveDrive m_Swerve = new SwerveDrive(swerveConstants, MotorType.CANSPARKMAX, driveTemplate, angleTemplate,
-        m_Imu);
-      
+  private final SwerveDrive m_Swerve =
+      new SwerveDrive(swerveConstants, MotorType.CANSPARKMAX, driveTemplate, angleTemplate, m_Imu);
+
   /* Driver Buttons */
 
   /*Auto Chooser Config */
@@ -106,14 +107,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     m_Swerve.setDefaultCommand(
-      new TeleopSwerve(
-          m_Swerve,
-          () -> LeftStick.getY(),
-          () -> LeftStick.getX(),
-          () -> RightStick.getX() ,
-          true
-         ));
-
+        new TeleopSwerve(
+            m_Swerve,
+            () -> LeftStick.getY(),
+            () -> LeftStick.getX(),
+            () -> RightStick.getX(),
+            true));
   }
 
   /**

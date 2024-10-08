@@ -1,9 +1,8 @@
 package RaiderLib.Dashboard;
 
+import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
-
-import RaiderLib.Subsystems.Drivetrains.SwerveDrive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -86,7 +85,8 @@ public class AutoTab extends SubsystemBase {
       ChoreoTrajectory pathTraj = m_trajectories.get(i);
       List<Pose2d> poses = Arrays.asList(pathTraj.getPoses());
       Trajectory displayTraj =
-          TrajectoryGenerator.generateTrajectory(poses, new TrajectoryConfig(AutoTabConfig.kMaxSpeed, AutoTabConfig.kMaxAcceleration));
+          TrajectoryGenerator.generateTrajectory(
+              poses, new TrajectoryConfig(AutoTabConfig.kMaxSpeed, AutoTabConfig.kMaxAcceleration));
       m_field.getObject("traj" + i).setTrajectory(displayTraj);
     }
   }
@@ -175,21 +175,24 @@ public class AutoTab extends SubsystemBase {
             try {
               ChoreoTrajectory path = Choreo.getTrajectory("" + lastPose + "-" + current);
               m_trajectories.add(path);
-              group.addCommands(Choreo.choreoSwerveCommand(
-                path,
-                m_drivetrain::getPose,
-                new PIDController(AutoTabConfig.kPXController, 0, 0),
-                new PIDController(AutoTabConfig.kPXController, 0, 0),
-                new PIDController(AutoTabConfig.kPThetaController, 0, 0),
-                (ChassisSpeeds speeds) -> {
-                  m_drivetrain.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond, false);
-                },
-                () -> {
-                    Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
-                    return alliance.isPresent() && alliance.get() == Alliance.Red;
-                },
-                m_drivetrain
-              ));
+              group.addCommands(
+                  Choreo.choreoSwerveCommand(
+                      path,
+                      m_drivetrain::getPose,
+                      new PIDController(AutoTabConfig.kPXController, 0, 0),
+                      new PIDController(AutoTabConfig.kPXController, 0, 0),
+                      new PIDController(AutoTabConfig.kPThetaController, 0, 0),
+                      (ChassisSpeeds speeds) -> {
+                        m_drivetrain.drive(
+                            new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
+                            speeds.omegaRadiansPerSecond,
+                            false);
+                      },
+                      () -> {
+                        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+                        return alliance.isPresent() && alliance.get() == Alliance.Red;
+                      },
+                      m_drivetrain));
             } catch (Exception e) {
               setFeedback("Path File Not Found");
               m_autoCommand = Commands.runOnce(() -> {});

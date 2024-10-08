@@ -2,8 +2,6 @@ package RaiderLib.Drivers.Motors;
 
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Config.PIDConstants;
-
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
@@ -117,7 +115,9 @@ public class SparkFlex implements Motor {
 
   public void configMotor() {
     m_SparkFlex.setIdleMode(
-        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE ? IdleMode.kBrake : IdleMode.kCoast);
+        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE
+            ? IdleMode.kBrake
+            : IdleMode.kCoast);
     m_SparkFlex.setInverted(this.m_Config.generalConfigs.motorInvert);
 
     m_SparkFlex.setOpenLoopRampRate(this.m_Config.rampRates.openLoopRampRateSeconds);

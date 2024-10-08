@@ -1,22 +1,21 @@
 package RaiderLib.Subsystems.Shooters;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import RaiderLib.Config.MotorConfiguration;
 import RaiderLib.Drivers.Motors.Motor;
-import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Drivers.Motors.Motor.MotorType;
+import RaiderLib.Drivers.Motors.MotorFactory;
 import RaiderLib.Logging.Logger;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DoubleFlyWheelShooter extends SubsystemBase {
   private Motor m_wheel1;
   private Motor m_wheel2;
 
   public DoubleFlyWheelShooter(
-    MotorType m1Type,
-    MotorType m2Type,
-    MotorConfiguration m1Config,
-    MotorConfiguration m2Config
-  ) {
+      MotorType m1Type,
+      MotorType m2Type,
+      MotorConfiguration m1Config,
+      MotorConfiguration m2Config) {
     m_wheel1 = MotorFactory.createMotor(m1Type, m1Config);
     m_wheel2 = MotorFactory.createMotor(m2Type, m2Config);
     m_wheel1.setFollower(m_wheel2);

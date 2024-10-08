@@ -54,7 +54,7 @@ MotorType.KRAKENX60
 MotorType.CANSPARKMAX
 MotorType.CANSPARKFLEX
 ```
-Each motor needs to be configured via the **MotorConfiguration** class 
+Each motor needs to be configured via the **MotorConfiguration** class
 There are many options, but you can see all of them in the source [code](https://github.com/RoboRaidersTeam75/RaiderLib/blob/main/src/main/java/RaiderLib/Config/MotorConfiguration.java)
 
 Usage:

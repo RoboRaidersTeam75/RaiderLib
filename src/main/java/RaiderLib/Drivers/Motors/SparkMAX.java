@@ -33,6 +33,7 @@ public class SparkMAX implements Motor {
     return m_Config;
   }
 
+  // hi
   public void setPercentOut(double speed) {
     m_SparkMAX.set(speed);
     if (m_follower != null) {
@@ -49,6 +50,7 @@ public class SparkMAX implements Motor {
 
   public void setPosition(double Rotations) {
     m_Controller.setReference(Rotations, ControlType.kPosition);
+    
     if (m_follower != null) {
       m_follower.setPosition(Rotations);
     }
@@ -114,7 +116,9 @@ public class SparkMAX implements Motor {
 
   public void configMotor() {
     m_SparkMAX.setIdleMode(
-        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE ? IdleMode.kBrake : IdleMode.kCoast);
+        this.m_Config.generalConfigs.neutralMode == NeutralMode.BRAKE
+            ? IdleMode.kBrake
+            : IdleMode.kCoast);
     m_SparkMAX.setInverted(this.m_Config.generalConfigs.motorInvert);
 
     m_SparkMAX.setOpenLoopRampRate(this.m_Config.rampRates.openLoopRampRateSeconds);

@@ -18,14 +18,14 @@ public class AutoTabConfig {
    * Actions within the same word will be ran simultaneously as a ParallelCommandGroup
    * There should be only up to one pose per word; any additional will be ignored
    * If present, the pose should be the first character in the word
-   * 
+   *
    * Create all paths for the blue alliance
    * Path names should be in the format of "A-B", where A is the starting position and B is the ending position
    */
 
-   public static final double kMaxSpeed = 5.0;
-   public static final double kMaxAcceleration = 3.0;
+  public static final double kMaxSpeed = 5.0;
+  public static final double kMaxAcceleration = 3.0;
 
-   public static final double kPXController = 1.0;
-   public static final double kPThetaController = 0.5;
+  public static final double kPXController = 1.0;
+  public static final double kPThetaController = 0.5;
 }
